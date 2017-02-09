@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<title>The Canvas - Creative Coding Yea!</title>
+<head>
+
+<meta charset="utf-8">
+
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+
+// w or width  = width of canvas
+// h or height = height of canvas
+// top left is 0,0
+// bottom right is w,h
+
+// colours: colours are expressed as red, blue and green values from 0-255
+// we can also use web hex values #000000 is black #ffffff is white
+// we can also simple use colour names
+// http://www.computerhope.com/htmcolor.htm
+// http://htmlcolorcodes.com/
+
+// DRAW CIRCLE
+// syntax: fillEllipse(x, y, w, h)
+
+
+// TOP LEFT
+// fillStyle = rgba(red, blue, green)
+ctx.fillStyle = rgb(255, 0, 0);
+ctx.fillEllipse(0, 0, 100, 100);
+
+// TOP RIGHT
+ctx.fillStyle = "blue";
+ctx.fillEllipse(w, 0, 100, 100);
+
+// BOTTOM LEFT
+ctx.fillStyle = "#00ff00";
+ctx.fillEllipse(0, h, 100, 100);
+
+// BOTTOM RIGHT
+ctx.fillStyle = "#00ffee";
+ctx.fillEllipse(w, h, 100, 100);
+
+// MIDDLE
+// fillStyle = rgba(red, blue, green, alpha)
+ctx.fillStyle = rgba(255, 200, 0, 0.4);
+ctx.fillEllipse(w/2, h/2, 100, 100);
+ctx.fillEllipse(w/2, h/2, 50, 50);
+
+</script>
+</body>
+
+</html>

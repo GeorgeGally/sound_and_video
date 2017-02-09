@@ -6,12 +6,13 @@ var p = CanvasRenderingContext2D.prototype;
 
 p.colour = function (r, g, b, a){
   'use strict';
-  this.fillStyle = this.getColour(r, g, b, a);
+  var c = this.getColour(r, g, b, a);
+  this.fillStyle = c;
 };
 
 
 p.lineColour = function (r, g, b, a){
-  'use strict';
+  console.log(r);
   this.strokeStyle = this.getColour(r, g, b, a);
 };
 
@@ -21,7 +22,7 @@ p.colourName = function (c){
 };
 
 p.getColour = function (r, g, b, a){
-  'use strict';
+
   if (g == undefined) {
     c = rgb(r, r, r);
 
@@ -162,6 +163,14 @@ p.fillPolygon = function (x, y, sides, size){
 }
 
 
+p.outlinedPolygon = function (_x, _y, _sides, _size, _fill, _stroke){
+  this.fillStyle = _fill;
+  this.fillPolygon(_x, _y, _sides, _size);
+  this.strokeStyle = _stroke;
+  this.strokePolygon(_x, _y, _sides, _size);
+}
+
+
 p.polygon = function (_x, _y, sides, size){
  this.beginPath();
  this.moveTo (_x +  size * Math.cos(0), _y +  size *  Math.sin(0));
@@ -263,6 +272,11 @@ function degreesToPoint(deg, diameter) {
     return {x: r * Math.cos(rad), y: r * Math.sin(rad)};
 }
 
+function distributeAngles(me, total) {
+    return me/total * 360;
+}
+
+
 
 function xyz(px, py, pz, pitch, roll, yaw) {
 
@@ -306,8 +320,9 @@ function rgb(r, g, b) {
 function rgba(r, g, b, a) {
  if (b == undefined) {
   return 'rgba('+clamp(Math.round(r),0,255)+', '+clamp(Math.round(r),0,255)+', '+clamp(Math.round(r),0,255)+', '+clamp(g,0,1)+')';
- } else {
- return 'rgba('+clamp(Math.round(r),0,255)+', '+clamp(Math.round(g),0,255)+', '+clamp(Math.round(b),0,255)+', '+clamp(a,0,1)+')';
+} else {
+  if (a == undefined) a = 1;
+  return 'rgba('+clamp(Math.round(r),0,255)+', '+clamp(Math.round(g),0,255)+', '+clamp(Math.round(b),0,255)+', '+clamp(a,0,1)+')';
  }
 };
 

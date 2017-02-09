@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>Creative Coding Yea!</title>
+<title>Mousemovement - Creative Coding Yea!</title>
 <head>
 
 <meta charset="utf-8">
@@ -20,14 +20,15 @@ var ctx = createCanvas("canvas1");
 
 function draw(){
 
+
+  ctx.fillStyle = rgba(0,174,239,0.1);
   //ctx.fillStyle = "red";
   //ctx.fillStyle = rgba(255, 0, 0, 0.1);
-  ctx.fillStyle = "#00aeef";
   // syntax: fillEllipse(x, y, w, h)
   //ctx.fillEllipse(mouseX, mouseY, 20, 20);
 
-  // syntax: fillRect(x, y, w, h)
-  ctx.fillRect(mouseX, mouseY, 20, 20);
+  // syntax: fillEllipse(x, y, w, h)
+  ctx.fillEllipse(mouseX, mouseY, 80, 80);
 
 }
 

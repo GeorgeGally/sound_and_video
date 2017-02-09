@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>The Canvas - Creative Coding Yea!</title>
+<title>Creative Coding Yea!</title>
 <head>
 
 <meta charset="utf-8">
@@ -18,8 +18,15 @@
 
 var ctx = createCanvas("canvas1");
 
-//fillEllipse(x-position, y-position, width, height)
-ctx.fillEllipse(100, 200, 50, 50);
+function draw(){
+
+  //ctx.fillStyle = "red";
+  ctx.fillStyle = rgba(255, 0, 0, 0.1);
+  // syntax: fillEllipse(x, y, w, h)
+  ctx.fillEllipse(mouseX, mouseY, 20, 20);
+
+}
+
 
 </script>
 </body>

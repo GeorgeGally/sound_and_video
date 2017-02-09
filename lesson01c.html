@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>Creative Coding Yea!</title>
+<title>Mousemovement - Creative Coding Yea!</title>
 <head>
 
 <meta charset="utf-8">
@@ -18,18 +18,27 @@
 
 var ctx = createCanvas("canvas1");
 
+// varaibles are containers that store values
+// here we set the values to the middle of the screen
+var oldX = w/2;
+var oldY = h/2;
+var mouseX = w/2;
+var mouseY = h/2;
+
+// set our line width
+ctx.lineWidth = 2;
+// set our line colour
+ctx.strokeStyle = rgb(0,174,239);
+
 function draw(){
 
-  if (mousePressed) {
-  //ctx.fillStyle = "red";
-  //ctx.fillStyle = rgba(255, 0, 0, 0.1);
-  ctx.fillStyle = "#00aeef";
-  // syntax: fillEllipse(x, y, w, h)
-  //ctx.fillEllipse(mouseX, mouseY, 20, 20);
+  // syntax: line(x1, y1, x2, y2)
+  ctx.line(mouseX, mouseY, oldX, oldY);
 
-  // syntax: fillRect(x, y, w, h)
-  ctx.fillRect(mouseX, mouseY, 20, 20);
-  }
+  // save the old values of our mouse
+  oldX = mouseX;
+  oldY = mouseY;
+
 }
 
 

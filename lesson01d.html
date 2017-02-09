@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>Creative Coding Yea!</title>
+<title>Mousemovement - Creative Coding Yea!</title>
 <head>
 
 <meta charset="utf-8">
@@ -17,19 +17,22 @@
 <script>
 
 var ctx = createCanvas("canvas1");
+var oldX = mouseX = w/2;
+var oldY = mouseY = h/2;
+ctx.lineWidth = 2;
+ctx.strokeStyle = rgb(0,174,239);
 
 function draw(){
 
+  // only draw the line if our mouse is pressed
   if (mousePressed) {
-
-    // setup stroke colour
-  ctx.strokeStyle = rgb(255, 0, 0);
-  // draw stroked rectangle
-  ctx.strokeRect(mouseX, mouseY, 20, 20);
-  // draw stroked circle
-  ctx.strokeEllipse(mouseX, mouseY, 20, 20);
+    // syntax: line(x1, y1, x2, y2)
+    ctx.line(mouseX, mouseY, oldX, oldY);
 
   }
+  oldX = mouseX;
+  oldY = mouseY;
+
 }
 
 
