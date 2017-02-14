@@ -42,6 +42,7 @@ Here's a helpful link: http://htmlcolorcodes.com/
 ####use with filled objects like fillRect(), fillEllipse()
 *use it before you draw your objects*
 
+#####ctx.fillStyle
 `ctx.fillStyle = "red";`
 
 `ctx.fillStyle = rgb(red, green, blue);` // values from 0-255
@@ -51,6 +52,7 @@ Here's a helpful link: http://htmlcolorcodes.com/
 `ctx.fillStyle = rgb(grey);` // draws grey fill
 
 
+#####ctx.Fill
 `ctx.Fill("red");`
 
 `ctx.Fill(red, green, blue);` // values from 0-255
@@ -65,6 +67,7 @@ Here's a helpful link: http://htmlcolorcodes.com/
 ####use with stroked objects like strokeRect(), strokeEllipse(), line()
 *use it before you draw your objects*
 
+#####ctx.strokeStyle
 `ctx.strokeStyle = "red";`
 
 `ctx.strokeStyle = rgb(red, green, blue);` // values from 0-255
@@ -72,6 +75,7 @@ Here's a helpful link: http://htmlcolorcodes.com/
 `ctx.strokeStyle = rgba(red, green, alpha);` // alpha is values are 0-1
 
 
+#####ctx.Stroke
 `ctx.Stroke("red");`
 
 `ctx.Stroke(red, green, blue);` // values from 0-255
