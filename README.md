@@ -28,10 +28,14 @@
 Here's a helpful link: http://htmlcolorcodes.com/
 
 ## Change the background colour
-`ctx.background("red");` // most colours have an english named variable
-`ctx.background(red, blue, green);` // values from 0-255
-`ctx.background(red, blue, green, alpha);` // alpha is values are 0-1
-`ctx.background(grey);` // alpha is values are 0-1
+*most colours have an english named variable*
+`ctx.background("red");`
+*values from 0-255*
+`ctx.background(red, blue, green);`
+*can also contain alpha/transparency value - alpha values are 0-1*
+`ctx.background(red, blue, green, alpha);`
+*grey values from 0-255*
+`ctx.background(grey);`
 
 
 ## change an object's fill colour
@@ -53,10 +57,10 @@ Here's a helpful link: http://htmlcolorcodes.com/
 ####use with stroked objects like strokeRect(), strokeEllipse(), line()
 *use it before you draw your objects*
 
-- ctx.strokeStyle = "red";
-- ctx.strokeStyle = rgb(red, green, blue); // values from 0-255
-- ctx.strokeStyle = rgba(red, green, alpha); // alpha is values are 0-1
+`ctx.strokeStyle = "red";`
+`ctx.strokeStyle = rgb(red, green, blue);` // values from 0-255
+`ctx.strokeStyle = rgba(red, green, alpha);` // alpha is values are 0-1
 
-- ctx.Stroke("red");
-- ctx.Stroke(red, green, blue); // values from 0-255
-- ctx.Stroke(red, green, blue, alpha); // alpha is values are 0-1
+`ctx.Stroke("red");`
+`ctx.Stroke(red, green, blue);` // values from 0-255
+`ctx.Stroke(red, green, blue, alpha);` // alpha is values are 0-1
