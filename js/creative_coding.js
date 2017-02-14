@@ -2,13 +2,43 @@
 var TWO_PI = Math.PI * 2;
 
 var p = CanvasRenderingContext2D.prototype;
-
-
-p.colour = function (r, g, b, a){
-  'use strict';
+// p.stroke = true;
+// p.fill = true;
+//
+// p.noStroke = function () {
+//   this.stroke = false;
+// }
+//
+// p.noFill = function () {
+//   this.fill = false;
+// }
+//
+// p.fill = function (r, g, b, a) {
+//   this.fill = true;
+//   p.colour(r, g, b, a);
+// }
+//
+p.Fill = function (r, g, b, a) {
   var c = this.getColour(r, g, b, a);
   this.fillStyle = c;
-};
+}
+
+p.Stroke = function (r, g, b, a) {
+  var c = this.getColour(r, g, b, a);
+  this.strokeStyle = c;
+}
+//
+//
+// p.Rect = function (_x, _y, _w, _h) {
+//   if (this.fill) this.fillRect(_x, _y, _w, _h);
+//   if (this.stroke) this.strokeRect(_x, _y, _w, _h);
+// }
+//
+// p.colour = function (r, g, b, a){
+//   'use strict';
+//   var c = this.getColour(r, g, b, a);
+//   this.fillStyle = c;
+// };
 
 
 p.lineColour = function (r, g, b, a){
@@ -23,7 +53,15 @@ p.colourName = function (c){
 
 p.getColour = function (r, g, b, a){
 
-  if (g == undefined) {
+  if((typeof r === 'string' || r instanceof String) && r.substr(0,1) == "#") {
+
+  return r;
+
+  } else if (typeof r === 'string' || r instanceof String) {
+
+  return r;
+
+  } else if (g == undefined) {
     c = rgb(r, r, r);
 
   } else if (b == undefined && a == undefined) {
@@ -242,16 +280,11 @@ p.eqTriangle = function(x, y, sz, down) {
 
 
 p.background = function (r, g, b, a){
- if (g == undefined) {
- this.fillStyle = rgb(r, r, r);
- } else if (b == undefined && a == undefined) {
-  this.fillStyle = rgba(r, r, r, g);
- } else if (a == undefined) {
-  this.fillStyle = rgb(r, g, b);
- } else {
- this.fillStyle = rgba(r, g, b, a);
- }
+
+ var c = this.getColour(r, g, b, a);
+ this.fillStyle = c;
  this.fillRect(0, 0, w, h);
+
 };
 
 p.rotateDegrees = function(deg){

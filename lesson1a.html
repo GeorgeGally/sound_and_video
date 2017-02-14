@@ -29,9 +29,15 @@ var ctx = createCanvas("canvas1");
 
 function draw(){
   ctx.background(255,255,255);
+  ctx.fillStyle = "red";
+  //console.log("mouseX:" + mouseX + " mouseY: " + mouseY);
+  ctx.fillText("mouseX: " + mouseX + " mouseY: " + mouseY, w/2, h/2);
 
-} // end draw
+}
 
+
+ctx.font = "40px helvetica";
+ctx.textAlign = "center";
 
 
 </script>

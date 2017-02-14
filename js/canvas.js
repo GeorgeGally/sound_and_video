@@ -43,7 +43,7 @@ function resize(){
 		c[i].height = height;
 
 	}
-	//console.log("resize: " + w +":" + h);
+	console.log("resize: " + w +":" + h);
 }
 
 
