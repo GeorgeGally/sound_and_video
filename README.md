@@ -29,21 +29,13 @@ Here's a helpful link: http://htmlcolorcodes.com/
 
 ## Change the background colour
 
-*most colours have an english named variable*
+`ctx.background("red");` //*most colours have an english named variable*
 
-`ctx.background("red");`
+`ctx.background(red, blue, green);` //*values from 0-255*
 
-*values from 0-255*
+`ctx.background(red, blue, green, alpha);` //*can also contain alpha/transparency value - alpha values are 0-1*
 
-`ctx.background(red, blue, green);`
-
-*can also contain alpha/transparency value - alpha values are 0-1*
-
-`ctx.background(red, blue, green, alpha);`
-
-*grey values from 0-255*
-
-`ctx.background(grey);`
+`ctx.background(grey);` //*grey values from 0-255*
 
 
 ## change an object's fill colour
