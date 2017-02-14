@@ -38,15 +38,15 @@ Here's a helpful link: http://htmlcolorcodes.com/
 use it before you draw your objects
 use with filled objects like fillRect(), fillEllipse()
 
-###ctx.fillStyle = "red";
-###ctx.fillStyle = rgb(red, green, blue); // values from 0-255
-###ctx.fillStyle = rgba(red, green, alpha); // alpha is values are 0-1
-###ctx.fillStyle = rgb(grey); // draws grey fill
+####ctx.fillStyle = "red";
+####ctx.fillStyle = rgb(red, green, blue); // values from 0-255
+####ctx.fillStyle = rgba(red, green, alpha); // alpha is values are 0-1
+####ctx.fillStyle = rgb(grey); // draws grey fill
 
-###ctx.Fill("red");
-###ctx.Fill(red, green, blue); // values from 0-255
-###ctx.Fill(red, green, blue, alpha); // alpha is values are 0-1
-###ctx.Fill(grey); // draws grey fill
+####ctx.Fill("red");
+####ctx.Fill(red, green, blue); // values from 0-255
+####ctx.Fill(red, green, blue, alpha); // alpha is values are 0-1
+####ctx.Fill(grey); // draws grey fill
 
 
 ## change an objects stroke (line) colour
