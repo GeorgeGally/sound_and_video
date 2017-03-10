@@ -8,6 +8,7 @@ audio {
 #audioplayer {
 	z-index: 9999;
  	width: 100%;
+
   	position: absolute;
   	background: #fff;
   	height: 120px;
@@ -16,8 +17,12 @@ audio {
     transition: 1s;
 }
 
+#audiocontainer {
+  display: -webkit-flex;
+  display: flex;
+}
 #playButton{
-	height:40px; 
+	height:40px;
 	width: 40px;
 	border: none;
 	background-size: 50% 50%;
@@ -33,7 +38,7 @@ audio {
 
 
 #timeline{
-	width: 82%;
+	width: 100%;
 	height: 11px;
 	background: #ddd;
 	margin-top: 20px;
@@ -98,17 +103,17 @@ audio {
 
 #soundcloudLogo {
 	display: block;
-	margin: 18px 0 0 10px;
+	margin: 7px 0 0 10px;
 }
 
 .wrapper {
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 100px; 
+    height: 100px;
 }
 
 #audioplayer.wrapper:hover {
     transition: 1s;
     top: 0 !important;
-} 
+}

@@ -2,81 +2,76 @@
 <html>
 <title>Creative Coding Yea!</title>
 <head>
-    <meta charset="utf-8">
-<!-- <script src='http://connect.soundcloud.com/sdk.js'></script> -->
+<meta charset="utf-8">
+
 <script language="javascript" src="js/creative_coding.js"></script>
 <script language="javascript" src="js/canvas.js"></script>
 
 <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
-<!-- <link rel="stylesheet" href="css/audio.css" type="text/css" media="screen" /> -->
+
 
 </head>
 <body>
 
 <script>
 
-var ctx = createCanvas("canvas1");
-var number_of_balls = 40;
-var balls = [];
-ctx.lineWidth = 3;
-ctx.background(0);
+// LET's MAKE AN ARRAY OUT OF A LOOP
 
-// push a ball and it's values into the array
-for (var i = 0; i < number_of_balls; i++) {
-  var ball = {
-    x:  width/2,
-    y: height/2,
-    speed_x: random(-5,5),
-    speed_y: random(-5,5),
-    size: 40,
-    colour: rgba(0)
-  }
-  balls.push(ball);
+var ctx = createCanvas("canvas1");
+var ball_count = 10;
+
+var bag_of_balls = [];
+for (var i = 0; i < ball_count; i++) {
+  bag_of_balls[i] = new Ball()
 }
 
+console.log(bag_of_balls);
 
 function draw(){
 
-  //ctx.background(0, 0.01);
-  moveBall();
-  drawBall();
-}
+  ctx.background(250, 0.1);
+  for (var i = 0; i < bag_of_balls.length; i++) {
+    bag_of_balls[i].moveBall();
+    bag_of_balls[i].drawBall();
+  }
+
+} // end draw
 
 
-function moveBall(){
 
-  for (var i = 0; i < balls.length; i++) {
-    var b = balls[i];
-    b.x = b.x + b.speed_x;
-    b.y = b.y + b.speed_y;
+// BALL OBJECT
 
-    if (bounce(b.x, 0, w, b.size)) {
-      b.speed_x *=-1;
+function Ball(){
+  this.x = width/2;
+  this.y = height/2;
+  this.block_size = 40;
+  this.speed_x = random(-5, 5);
+  this.speed_y = random(-5, 5);
+
+  this.drawBall = function(){
+    ctx.fillStyle = "#00aeef";
+    ctx.fillEllipse(this.x, this.y, this.block_size, this.block_size);
+  }
+
+  this.moveBall = function(){
+    this.x += this.speed_x;
+    this.y += this.speed_y;
+
+    if (this.x > width - this.block_size/2 || this.x < this.block_size/2 ) {
+      this.speed_x *= -1;
     }
 
-    if (bounce(b.y, 0 ,h, b.size)) {
-      b.speed_y *=-1;
+    if (this.y > height - this.block_size/2 || this.y < this.block_size/2 ) {
+      this.speed_y *= -1;
     }
-
   }
 
 }
 
-
-function drawBall(){
-  for (var i = 0; i < balls.length; i++) {
-    var b = balls[i];
-    ctx.fillStyle = b.colour;
-    ctx.fillPolygon(b.x, b.y, 6, b.size);
-    ctx.strokeStyle = rgba(255, 0.6);
-    ctx.strokePolygon(b.x, b.y, 6, b.size);
-  }
-}
 
 
 </script>
-
 </body>
 
 </html>

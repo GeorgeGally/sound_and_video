@@ -6,52 +6,40 @@
 
 <script language="javascript" src="js/creative_coding.js"></script>
 <script language="javascript" src="js/canvas.js"></script>
-<script language="javascript" src="js/soundcloud.js"></script>
 
 <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="css/audio.css" type="text/css" media="screen" />
+
 
 </head>
 <body>
 
 <script>
 
-// LET's ADD SOUND
+// LET's ADD PHYSICS
 
 
 var ctx = createCanvas("canvas1");
 ctx.lineWidth = 2;
-var Sound = new soundCloud(512);
-console.log(Sound);
+
 var bag_of_balls = [];
-var max_balls = 200;
 
-var spacing = w/max_balls;
-
-for (var i = 0; i < max_balls; i++) {
-  addBall(i*spacing + spacing/2, h);
+function addBall(){
+  bag_of_balls.push(new Ball(mouseX, mouseY));
 }
 
-function addBall(_x, _y){
-  bag_of_balls.push(new Ball(_x, _y));
-}
+
+console.log(bag_of_balls);
 
 function draw(){
   if (mouseMoved == true) {
     addBall();
   }
-  ctx.background(250);
-  var vol = Sound.getVolume()
-  ctx.fillStyle = rgb(240)
-  ctx.fillRect(0, h- vol, w, vol);
+  ctx.background(250, 0.1);
   for (var i = 0; i < bag_of_balls.length; i++) {
     var b = bag_of_balls[i];
-    b.block_size = 10 + Sound.mapSound(i, bag_of_balls.length);
-    //console.log();
-    //b.moveBall();
+    b.moveBall();
     b.drawBall();
-
   }
 
 } // end draw
@@ -63,14 +51,13 @@ function draw(){
 function Ball(_x, _y){
   this.x = _x;
   this.y = _y;
-  this.block_size = random(5, 20);
-  this.speed_x = posNeg() * random(1, 3);
+  this.block_size = 10;
+  this.speed_x = posNeg() * random(3, 8);
   this.speed_y = random(-8, -3);
-  this.colour = hsl(map(bag_of_balls.length, 0, max_balls, 0, 360), 50, 50);
 
   this.drawBall = function(){
-    ctx.fillStyle = this.colour;
-    ctx.fillRect(this.x, this.y-this.block_size, spacing-1, this.block_size);
+    ctx.fillStyle = "#000";
+    ctx.fillEllipse(this.x, this.y, this.block_size, this.block_size);
   }
 
   this.moveBall = function(){
@@ -82,7 +69,7 @@ function Ball(_x, _y){
     }
 
     if (this.y > height - this.block_size/2 || this.y < this.block_size/2 ) {
-      this.speed_y *= -0.9;
+      this.speed_y *= -1;
     }
   }
 
@@ -91,9 +78,6 @@ function Ball(_x, _y){
 
 
 </script>
-
-
-
 </body>
 
 </html>

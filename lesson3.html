@@ -16,62 +16,27 @@
 
 <script>
 
+// ARRAYS
+// NEATENING IT UP T)O GET READY FOR CLASS
+
+
 var ctx = createCanvas("canvas1");
-var max_balls = 2000;
-var balls = [];
-
-for (var i = 0; i < max_balls; i++) {
-  addBall();
-}
-
-// push a ball and it's values into the array
-function addBall(){
-  var ball = {
-    x: random(w),
-    y: random(-200,0),
-    speed_x: 0,
-    speed_y: random(0.5, 3),
-    size: 8,
-    colour: rgb(random(255))
-  }
-  balls.push(ball);
-  if (balls.length > max_balls) balls.splice(0,1);
-}
-
-function draw(){
-
-  ctx.background(0, 0.06);
-
-  moveBall();
-  drawBall();
-}
-
-
-function moveBall(){
-
-  for (var i = 0; i < balls.length; i++) {
-    var b = balls[i];
-    b.x = b.x + b.speed_x;
-    b.y = b.y + b.speed_y;
-
-    if (b.y>h) {
-      b.y = random(-100,0);
-      b.colour = rgb(randomInt(255));
-    }
-
-  }
-
-}
-
-
-function drawBall(){
-  for (var i = 0; i < balls.length; i++) {
-    var b = balls[i];
-    ctx.fillStyle = b.colour;
-    ctx.fillEllipse(b.x, b.y, b.size, b.size);
-  }
-}
-
+var my_array = []; // creates a blank array
+var my_array = [1, 2, 3, 4]; // elements are sperated by commas
+my_array[0] = 0; // [0, 2, 3, 4];
+console.log(my_array[0]) // 0
+console.log(my_array[4]) // undefined
+console.log(my_array.length) // 4
+my_array.push(5);
+console.log(my_array) // [0, 2, 3, 4, 5]
+my_array.shift(1);
+console.log(my_array) // [2, 3, 4, 5]
+my_array.splice(0,1);
+console.log(my_array) // [3, 4, 5]
+my_array.unshift(2);
+console.log(my_array) // [2, 3, 4, 5]
+my_array[0] = "bob";
+console.log(my_array) // ["bob", 3, 4, 5]
 
 </script>
 

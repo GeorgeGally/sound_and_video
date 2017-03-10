@@ -16,58 +16,62 @@
 
 <script>
 
-// LET's MAKE AN ARRAY OF OBJECTS
-
-
+// LET's MAKE AN ARRAY OUT OF A LOOP
 
 var ctx = createCanvas("canvas1");
+ctx.lineWidth = 2;
+
+var ball_count = 20;
 
 var bag_of_balls = [];
-bag_of_balls[0] = new Ball();
-bag_of_balls[1] = new Ball();
-bag_of_balls[2] = new Ball();
+for (var i = 0; i < ball_count; i++) {
+  bag_of_balls[i] = new Ball()
+}
 
 console.log(bag_of_balls);
+
+function draw(){
+
+  //ctx.background(250, 0.1);
+  for (var i = 0; i < bag_of_balls.length; i++) {
+    bag_of_balls[i].moveBall();
+    bag_of_balls[i].drawBall();
+  }
+
+} // end draw
+
+
+
+// BALL OBJECT
 
 function Ball(){
   this.x = width/2;
   this.y = height/2;
-  this.block_size = 40;
-  this.speed_x = random(-5, 5);
-  this.speed_y = random(-5, 5);
+  this.block_size = 80;
+  this.speed_x = posNeg() * random(3, 8);
+  this.speed_y = posNeg() * random(3, 8);
 
   this.drawBall = function(){
-    ctx.fillStyle = "#00aeef";
+    ctx.fillStyle = "#000";
     ctx.fillEllipse(this.x, this.y, this.block_size, this.block_size);
+    ctx.strokeStyle = "#fff";
+    ctx.strokeEllipse(this.x, this.y, this.block_size, this.block_size);
   }
 
   this.moveBall = function(){
     this.x += this.speed_x;
     this.y += this.speed_y;
 
-    if (this.x > width || this.x < 0 ) {
+    if (this.x > width - this.block_size/2 || this.x < this.block_size/2 ) {
       this.speed_x *= -1;
     }
 
-    if (this.y > height || this.y < 0 ) {
+    if (this.y > height - this.block_size/2 || this.y < this.block_size/2 ) {
       this.speed_y *= -1;
     }
   }
 
 }
-
-function draw(){
-
-  ctx.background(250, 0.1);
-  bag_of_balls[0].moveBall();
-  bag_of_balls[0].drawBall();
-  bag_of_balls[1].moveBall();
-  bag_of_balls[1].drawBall();
-  bag_of_balls[2].moveBall();
-  bag_of_balls[2].drawBall();
-
-} // end draw
-
 
 
 

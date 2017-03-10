@@ -33,8 +33,8 @@ function draw(){
   if (ball_y < 0 || ball_y > h) {
     speed_y *= -1;
   }
-
-  ctx.fillStyle = rgb(255,0,0);
+  r = random(100, 255);
+  ctx.fillStyle = rgb(r,0,0);
   ctx.fillEllipse(ball_x, ball_y, block_size, block_size);
 
 }

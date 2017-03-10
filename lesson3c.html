@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
-<title>Creative Coding Yea!</title>
+<title>LOOPS</title>
 <head>
     <meta charset="utf-8">
-<!-- <script src='http://connect.soundcloud.com/sdk.js'></script> -->
 <script language="javascript" src="js/creative_coding.js"></script>
 <script language="javascript" src="js/canvas.js"></script>
 
 <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
-<!-- <link rel="stylesheet" href="css/audio.css" type="text/css" media="screen" /> -->
+
 
 </head>
 <body>
@@ -17,67 +16,18 @@
 <script>
 
 var ctx = createCanvas("canvas1");
-ctx.lineWidth = 4;
-var max_balls = 1000;
-var balls = [];
 
-for (var i = 0; i < max_balls; i++) {
-  addBall();
-}
-
-// push a ball and it's values into the array
-function addBall(){
-  var ball = {
-    x: random(w),
-    y: random(-200,0),
-    speed_x: 0,
-    speed_y: random(0.5, 6),
-    size: randomInt(15, 120),
-    colour: rgb(random(255))
-  }
-  balls.push(ball);
-  if (balls.length > max_balls) balls.splice(0,1);
-}
+var step = 120;
 
 function draw(){
+  ctx.background(255);
 
-  ctx.background(0, 0.6);
-
-  moveBall();
-  drawBall();
+  var size = random(50,100);
+  for (var i = 0; i < w; i+=step) {
+    ctx.fillStyle = rgb(i/5, i/10, 0);
+       ctx.fillRect(i-size/2, h/2 + Math.sin((frameCount + i)/100) * h/2-size/2, size, size);
+     }
 }
-
-
-function moveBall(){
-
-  for (var i = 0; i < balls.length; i++) {
-    var b = balls[i];
-    b.x = b.x + b.speed_x;
-    b.y = b.y + b.speed_y;
-
-    if (b.y > h) {
-      resetBall(b);
-    }
-
-  }
-
-}
-
-function resetBall(b){
-  b.y = random(-100,0);
-  b.colour = rgb(randomInt(255));
-}
-
-function drawBall(){
-  for (var i = 0; i < balls.length; i++) {
-    var b = balls[i];
-    ctx.fillStyle = b.colour;
-    ctx.fillEllipse(b.x, b.y, b.size, b.size);
-    ctx.strokeStyle = "white";
-    ctx.strokeEllipse(b.x, b.y, b.size, b.size);
-  }
-}
-
 
 </script>
 

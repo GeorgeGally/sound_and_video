@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
-<title>The Canvas - Creative Coding Yea!</title>
+<title>LOOPS</title>
 <head>
-
-<meta charset="utf-8">
-
+    <meta charset="utf-8">
 <script language="javascript" src="js/creative_coding.js"></script>
 <script language="javascript" src="js/canvas.js"></script>
 
 <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
 
 </head>
 <body>
@@ -18,12 +17,21 @@
 
 var ctx = createCanvas("canvas1");
 
-// lets use a variable to position our circle
-var x = 300;
-ctx.Fill("red");
-ctx.fillEllipse(x, 200, 100, 100);
+var step = 5;
+var size = 10;
+
+function draw(){
+  ctx.background(0, 0.1);
+
+
+  for (var i = 0; i < w; i+=step) {
+    ctx.fillStyle = rgb(i/3);
+       ctx.fillEllipse(i, h/2 + Math.sin((frameCount + i)/100) * h/2, size, size);
+     }
+}
 
 </script>
+
 </body>
 
 </html>

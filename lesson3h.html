@@ -27,12 +27,16 @@ ctx.lineWidth = 2;
 
 var bag_of_balls = [];
 
+function addBalls(){
+
+}
+
 
 console.log(bag_of_balls);
 
 function draw(){
   if (mouseMoved == true) {
-    bag_of_balls.push(new Ball());
+    bag_of_balls.push(new Ball(mouseX, mouseY));
   }
   ctx.background(250, 0.1);
   for (var i = 0; i < bag_of_balls.length; i++) {
@@ -46,18 +50,16 @@ function draw(){
 
 // BALL OBJECT
 
-function Ball(){
-  this.x = width/2;
-  this.y = height/2;
-  this.block_size = 20;
+function Ball(_x, _y){
+  this.x = _x;
+  this.y = _y;
+  this.block_size = 10;
   this.speed_x = posNeg() * random(3, 8);
   this.speed_y = posNeg() * random(3, 8);
 
   this.drawBall = function(){
     ctx.fillStyle = "#000";
     ctx.fillEllipse(this.x, this.y, this.block_size, this.block_size);
-    ctx.strokeStyle = "#fff";
-    ctx.strokeEllipse(this.x, this.y, this.block_size, this.block_size);
   }
 
   this.moveBall = function(){

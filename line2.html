@@ -17,17 +17,33 @@
 <script>
 
 var ctx = createCanvas("canvas1");
-var blocsize = 200;
+var my_red = 0;
+var my_green = 0;
+var my_blue = 0;
 
 
-// map (input_value, min_in, max_in, min_ot, max_out);
 
 function draw(){
-  var r = map(mouseX, 0, w, 0, 255);
-  var g = map(mouseX, 0, h, 0, 255);
-  ctx.fillStyle = rgb(r, g, 0);
-  ctx.fillEllipse(mouseX, mouseY, blocsize, blocsize);
 
+  ctx.background(mouseX,mouseY,100,0.1);
+  ctx.lineWidth = 1+ Math.floor(mouseX-oldMouseX);
+  my_red = my_red + 10;
+  my_green = my_green + 10;
+  my_blue = my_blue + 10;
+  ctx.strokeStyle = rgb(my_red, my_green, my_blue);
+
+  if (mousePressed) {
+  ctx.line(mouseX, mouseY, oldMouseX, oldMouseY);
+  }
+  if (my_red > 255) {
+    my_red = 0;
+  }
+  if (my_green > 255) {
+    my_green = 0;
+  }
+  if (my_blue > 255) {
+    my_blue = 0;
+  }
 
 }
 

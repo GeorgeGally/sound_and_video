@@ -2,66 +2,63 @@
 <html>
 <title>Creative Coding Yea!</title>
 <head>
-    <meta charset="utf-8">
-<!-- <script src='http://connect.soundcloud.com/sdk.js'></script> -->
+<meta charset="utf-8">
+
 <script language="javascript" src="js/creative_coding.js"></script>
 <script language="javascript" src="js/canvas.js"></script>
 
 <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
-<!-- <link rel="stylesheet" href="css/audio.css" type="text/css" media="screen" /> -->
+
 
 </head>
 <body>
 
 <script>
 
+// SEPERATE DRAW AND MATHS INTO FUNCTIONS
+// CHANGE COLOUR WHEN BALL HITS WALL
+// USE RANDOM
+// var r = randomInt(100, 255);
+// var g = randomInt(255);
+// var b = randomInt(0, 55);
+// ctx.fillStyle = rgb(r, g, b);
+
 var ctx = createCanvas("canvas1");
-
-var ball = {
-  x:  width/2,
-  y: height/2,
-  speed_x: random(-5, 5),
-  speed_y: random(-5, 5),
-  size: 20,
-  colour: rgb(0)
-}
-
+var block_size = 40;
+var x = width/2;
+var y = height/2;
+var speed_x = random(-5, 5);
+var speed_y = random(-5, 5);
 
 function draw(){
 
-  //ctx.background(255, 0.2);
-  //ctx.fillStyle = rgb(255,0,0);
-  moveBall();
+  // give the background an alpha to see trails
+  ctx.background(250, 0.1);
+
+  x = x + speed_x;
+  y = y + speed_y;
+
+  if (x > width || x < 0 ) {
+    speed_x = speed_x *-1;
+  }
+
+  if (y > height || y < 0 ) {
+    speed_y = speed_y *-1;
+  }
+
   drawBall();
-}
 
-
-function moveBall(){
-
-  if (bounce(ball.x, 0, w, ball.size)) {
-    ball.speed_x *=-1;
-    ctx.fillStyle = rgb(randomInt(255),randomInt(255),0);
-  }
-
-  if (bounce(ball.y, 0 ,h, ball.size)) {
-    ball.speed_y *=-1;
-    ctx.fillStyle = rgb(0, randomInt(255),randomInt(255));
-  }
-
-  ball.x = ball.x + ball.speed_x;
-  ball.y = ball.y + ball.speed_y;
-
-}
+} // end draw
 
 
 function drawBall(){
-  ctx.fillEllipse(ball.x, ball.y, ball.size, ball.size);
+  ctx.fillStyle = "#00aeef";
+  ctx.fillEllipse(x, y, block_size, block_size);
 }
 
 
 </script>
-
 </body>
 
 </html>

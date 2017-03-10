@@ -350,12 +350,16 @@ function rgb(r, g, b) {
 
 };
 
+
 function rgba(r, g, b, a) {
- if (b == undefined) {
-  return 'rgba('+clamp(Math.round(r),0,255)+', '+clamp(Math.round(r),0,255)+', '+clamp(Math.round(r),0,255)+', '+clamp(g,0,1)+')';
+  if (g == undefined) {
+   return 'rgb('+clamp(Math.round(r),0,255)+', '+clamp(Math.round(r),0,255)+', '+clamp(Math.round(r),0,255)+')';
+ } else if (b == undefined) {
+    return 'rgba('+clamp(Math.round(r),0,255)+', '+clamp(Math.round(r),0,255)+', '+clamp(Math.round(r),0,255)+', '+clamp(g,0,1)+')';
+  } else if (a == undefined){
+  return 'rgba('+clamp(Math.round(r),0,255)+', '+clamp(Math.round(g),0,255)+', '+clamp(Math.round(b),0,255)+', 1)';
 } else {
-  if (a == undefined) a = 1;
-  return 'rgba('+clamp(Math.round(r),0,255)+', '+clamp(Math.round(g),0,255)+', '+clamp(Math.round(b),0,255)+', '+clamp(a,0,1)+')';
+return 'rgba('+clamp(Math.round(r),0,255)+', '+clamp(Math.round(g),0,255)+', '+clamp(Math.round(b),0,255)+', '+clamp(a,0,1)+')';
  }
 };
 
@@ -973,7 +977,7 @@ document.onmouseup = function() {
 }
 
 var mouseSpeedX = mouseSpeedX = 0;
-var mouseX = 0,
+var mouseX = -100,
  mouseY = 0,
  lastMouseX = 0,
  lastMouseY = 0,
