@@ -81,3 +81,4 @@ Here's a helpful link: http://htmlcolorcodes.com/
 `ctx.Stroke(red, green, blue);` // values from 0-255
 
 `ctx.Stroke(red, green, blue, alpha);` // alpha is values are 0-1
+# sound_and_video
