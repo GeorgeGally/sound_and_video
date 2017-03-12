@@ -966,6 +966,7 @@ function ScaleImage(srcwidth, srcheight, targetwidth, targetheight, fLetterBox) 
 
 var mousePressed = 0;
 var mouseReleased = 0;
+
 document.onmousedown = function() {
   mousePressed = 1;
   //window.mousePressed();

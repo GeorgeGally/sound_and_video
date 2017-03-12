@@ -17,11 +17,42 @@
 <script>
 
 var ctx = createCanvas("canvas1");
+var x = w/2;
+var y = h/2;
 
-// lets use a variable to position our circle
-var x = 300;
-ctx.Fill("red");
-ctx.fillEllipse(x, 200, 100, 100);
+var speedx = random(-10, 10);
+var speedy = random(-10, 10);;
+var my_colour = "red";
+
+function draw(){
+    //ctx.clearRect(0, 0, w, h);
+    //ctx.background(0, 10, 5, 0.1);
+    ctx.fillStyle = my_colour;
+    moveBall();
+    if (mousePressed) {
+      drawBall();
+    }
+
+}
+
+function drawBall(){
+  ctx.fillEllipse(mouseX, mouseY, 20, 20);
+}
+
+function moveBall(){
+  x = x + speedx;
+  y = y + speedy;
+  if (x > w || x < 0) {
+    speedx = speedx *-1;
+    my_colour = rgb(random(0, 255), random(0, 255), random(0, 255));
+  }
+
+  if (y > h || y < 0) {
+    speedy = speedy *-1;
+    my_colour = rgb(random(0, 255), random(0, 255), random(0, 255));
+  }
+}
+
 
 </script>
 </body>

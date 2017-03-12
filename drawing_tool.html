@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>Mousemovement - Creative Coding Yea!</title>
+<title>The Canvas - Creative Coding Yea!</title>
 <head>
 
 <meta charset="utf-8">
@@ -17,19 +17,26 @@
 <script>
 
 var ctx = createCanvas("canvas1");
-var blocsize = 200;
 
-
-// map (input_value, min_in, max_in, min_ot, max_out);
+var my_colour = rgba(0,0,0,0.8);
 
 function draw(){
-  var r = map(mouseX, 0, w, 0, 255);
-  var g = map(mouseX, 0, h, 0, 255);
-  ctx.fillStyle = rgb(100, g, 0);
-  ctx.fillEllipse(mouseX, mouseY, blocsize, blocsize);
-  pixelate(10);
+
+  ctx.background(255, 255, 255, 0.1)
+    ctx.fillStyle = my_colour;
+
+    if (mousePressed) {
+      drawBall();
+    }
 
 }
+
+function drawBall(){
+  ctx.fillStyle = rgb(random(200), random(200), 0);
+  var ball_size = mouseX - oldMouseX;
+  ctx.fillEllipse(mouseX, mouseY, ball_size, ball_size);
+}
+
 
 
 </script>
