@@ -17,9 +17,8 @@
 
 <script>
 
-var ctx2 = createCanvas("canvas2");
 var ctx = createCanvas("canvas1");
-
+var ctx2 = createCanvas("canvas2");
 var block_size = 20;
 var maxballs = 1500;
 var balls = [];
@@ -29,26 +28,16 @@ function removeBall(){
   balls.splice(0,1);
 }
 
-function update(){
 
-  motion = motionDetection(20);
-
-  for (var i = 0; i < motion.length; i++) {
-    m = motion[i];
-    balls.push(new Ball(m.x, m.y, i));
-    if (balls.length > maxballs) {
-    removeBall();
-    }
-  } // end for loop
-
-}
 
 
 function draw(){
 
-  ctx.background(250);
+  ctx.background(0);
 
-  update();
+  if(mouseMoved) {
+    balls.push(new Ball(mouseX, mouseY, balls.length));
+  }
 
   for (var i = 0; i < balls.length; i++) {
     b = balls[i];
@@ -63,35 +52,39 @@ function draw(){
 
 // BALL OBJECT
 
-function Ball(_x, _y, _i){
+function Ball(_x, _y, _id){
   this.x = _x;
   this.y = _y;
-  this.start_x = _x;
-  this.start_y = _y;
-
-  this.me = _i;
-  this.block_size = 10;
-  this.speed_x = random(-5, 5);
-  this.speed_y = random(-5, -1);
-  this.c = rgb(random(255), 0, 0);
+  this.me = _id;
+  this.block_size = 20;
+  this.speed_x = random(-1, 1);
+  this.speed_y = random(-15, 15);
+  this.c = rgb(random(255));
 
 
   this.drawBall = function(){
-    ctx.fillStyle = this.c;
-    //ctx.fillEllipse(this.x, this.y, this.block_size, this.block_size);
 
-    //ctx.fillEllipse(this.start_x, this.start_y, 10, 10);
-    ctx.line(this.start_x, this.start_y, this.x, this.y);
+    ctx.fillStyle = rgb(this.y);
+    ctx.fillEllipse(this.x, this.y, this.block_size, this.block_size);
   }
+
   this.moveBall = function(){
+    this.speed_x += random(-1,1);
+    this.speed_y += random(-1,1);
     this.x += this.speed_x;
     this.y += this.speed_y;
-    this.speed_y += 0.4;
-    this.block_size -= 0.1;
+    this.start_x += this.speed_x/2;
+    this.start_y += this.speed_y/2;
+    this.speed_y += 0.8;
+    if (this.block_size > 1) {
+      this.block_size -= 0.1;
+    }
 
     if (this.x > width || this.x < 0  || this.y > height || this.y < 0 || this.block_size < 1 ) {
       balls.splice(0, 1);
     }
+
+
   }
 
 }

@@ -26,17 +26,23 @@ var frameRate = 60;
 block_size = 30;
 function draw(){
 
-  ctx.background(250, 0.2);
-
+  ctx.background(250, 0.1);
   ctx.fillStyle = "#00aeef";
 
-  // motion loop
   var motion = motionDetection(block_size);
-  //console.log(motion);
   for (var i = 0; i < motion.length; i++) {
     m = motion[i];
-    ctx.fillRect(m.x, m.y, block_size, block_size)
-  } // end for loop
+    var red = m.z.x;
+    var green = m.z.y;
+    var blue = m.z.z;
+    var colour = rgb(red,blue, green);
+    console.log(m);
+
+    ctx.fillStyle = "black";
+    ctx.fillEllipse(m.x, m.y, block_size, block_size);
+    ctx.fillStyle = "white";
+    ctx.fillEllipse(m.x, m.y, 10, 10);
+  }
 
 } // end draw
 
