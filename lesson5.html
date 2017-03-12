@@ -16,66 +16,61 @@
 
 <script>
 
-var ctx = createCanvas("canvas1");
-var block_size = 20;
-var rect_size = 60;
 
-var number_of_balls = 15;
+var ctx = createCanvas("canvas1");
+
 var balls = [];
 
-for (var i = 0; i < number_of_balls; i++) {
-  addBall();
+for (var i = 0; i < 100; i++) {
+  balls[i] = new Ball();
 }
 
-console.log(balls);
 
-// think of an function like a machine
-function addBall(){
+console.log(balls.length)
 
-  // we create a ball object - an object has properties
-  var ball = {
-    x:  width/2,
-    y: height/2,
-    speed_x: random(-5, 5),
-    speed_y: random(-5, 5),
-    size: 20
-  }
+console.log(balls)
 
-  balls.push(ball);
-}
+
 
 
 function draw(){
+  ctx.background(255);
 
-  ctx.background(250);
+  for (var i = 0; i < balls.length; i++) {
 
-  ctx.fillStyle = "#00aeef"
-  // ctx.fillRect(mouseX -rect_size/2, mouseY -rect_size/2, rect_size, rect_size);
-  ctx.centreFillRect(mouseX, mouseY, rect_size, rect_size);
+    balls[i].moveBall();
+    balls[i].drawBall();
 
-  for (var i = 0; i < number_of_balls; i++) {
-    b = balls[i];
+  }
 
-    b.x += b.speed_x;
-    b.y += b.speed_y;
+}
 
-    // we adjust the hit area because shere is drawn from the centre
-    if (b.x > width - b.size/2  || b.x < b.size/2  ) {
-      b.speed_x = b.speed_x *-1;
+function Ball(){
+    this.x = w/2;
+    this.y = h/2;
+    this.speedx = random(-10,10);
+    this.speedy = random(-10,10);
+    this.ball_size = random(10, 100);
+    this.colour = rgb(random(255));
+
+    this.drawBall = function(){
+        ctx.fillStyle = this.colour;
+        ctx.fillRect(this.x, this.y, this.ball_size, this.ball_size);
+        //ctx.line(0,0,this.x, this.y);
+    }
+    this.moveBall = function(){
+      this.x = this.x + this.speedx;
+      this.y = this.y + this.speedy;
+      this.speedy += 0.99;
+      if(this.x > w || this.x < 0) {
+        this.speedx *=-1;
+      }
+      if(this.y > h || this.y < 0) {
+        this.speedy *=-1;
+      }
     }
 
-    if (b.y > height - b.size/2 || b.y < b.size/2 ) {
-      b.speed_y = b.speed_y *-1;
-    }
-
-    ctx.fillStyle = rgb(0);
-    ctx.fillEllipse(b.x, b.y, b.size, b.size);
-
-
-  } // end for loop
-
-  //pixelate(10);
-} // end draw
+}
 
 
 

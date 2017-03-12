@@ -19,12 +19,12 @@
 
 // LET's ADD SOUND
 
-
 var ctx = createCanvas("canvas1");
 ctx.lineWidth = 2;
 var Sound = new soundCloud(512);
+
 console.log(Sound);
-var bag_of_balls = [];
+var balls = [];
 var max_balls = 200;
 
 var spacing = w/max_balls;
@@ -34,7 +34,7 @@ for (var i = 0; i < max_balls; i++) {
 }
 
 function addBall(_x, _y){
-  bag_of_balls.push(new Ball(_x, _y));
+  balls.push(new Ball(_x, _y));
 }
 
 function draw(){
@@ -45,11 +45,9 @@ function draw(){
   var vol = Sound.getVolume()
   ctx.fillStyle = rgb(240)
   ctx.fillRect(0, h- vol, w, vol);
-  for (var i = 0; i < bag_of_balls.length; i++) {
-    var b = bag_of_balls[i];
-    b.block_size = 10 + Sound.mapSound(i, bag_of_balls.length);
-    //console.log();
-    //b.moveBall();
+  for (var i = 0; i < balls.length; i++) {
+    var b = balls[i];
+    b.block_size = 10 + Sound.mapSound(i, balls.length);
     b.drawBall();
 
   }
@@ -66,7 +64,7 @@ function Ball(_x, _y){
   this.block_size = random(5, 20);
   this.speed_x = posNeg() * random(1, 3);
   this.speed_y = random(-8, -3);
-  this.colour = hsl(map(bag_of_balls.length, 0, max_balls, 0, 360), 50, 50);
+  this.colour = hsl(map(balls.length, 0, max_balls, 0, 360), 50, 50);
 
   this.drawBall = function(){
     ctx.fillStyle = this.colour;
