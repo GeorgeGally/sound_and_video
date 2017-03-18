@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+    <meta charset="utf-8">
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="js/vector.js"></script>
+<script language="javascript" src="js/video.js"></script>
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
+
+</head>
+<body>
+
+<script>
+var smile = new Image();
+smile.src = 'img/smile.png';
+var ctx2 = createCanvas("canvas2");
+var ctx = createCanvas("canvas1");
+
+var block_size = 20;
+var maxballs = 1500;
+var balls = [];
+
+
+function removeBall(){
+  balls.splice(0,1);
+}
+
+function update(){
+
+  motion = motionDetection(10);
+
+  for (var i = 0; i < motion.length; i++) {
+    m = motion[i];
+    var c = rgba(m.z.x,m.z.y,m.z.y, 0.3);
+    balls.push(new Ball(m.x, m.y, c, i));
+    if (balls.length > maxballs) {
+    removeBall();
+    }
+  } // end for loop
+
+}
+
+
+function draw(){
+
+  ctx.background(250, 0.1);
+
+  update();
+
+  for (var i = 0; i < balls.length; i++) {
+    b = balls[i];
+    b.moveBall();
+    b.drawBall();
+
+  } // end for loop
+  ctx.drawImage(smile, w/2 -100,h/2-100, 200,200)
+} // end draw
+
+
+
+// BALL OBJECT
+
+function Ball(_x, _y, _c, _i){
+  this.x = _x;
+  this.y = _y;
+  this.start_x = _x;
+  this.start_y = _y;
+
+  this.me = _i;
+  this.block_size = 10;
+  this.speed_x = 0;
+  this.speed_y = 0;
+  this.c = _c;
+
+  this.drawBall = function(){
+    ctx.fillStyle = this.c;
+    ctx.lineStyle = this.c;
+    //ctx.centreFillRect(this.x, this.y, this.block_size, this.block_size);
+
+    ctx.drawImage(smile, this.x,this.y, 20,20)
+  }
+  this.moveBall = function(){
+    //this.x += this.speed_x;
+    //this.y += this.speed_y;
+    //this.speed_y += 0.4;
+    this.block_size += 2;
+
+    if (this.x > width || this.x < 0  || this.y > height || this.y < 0 || this.block_size > 200 ) {
+      balls.splice(0, 1);
+    }
+  }
+
+}
+
+
+
+
+</script>
+
+<script language="javascript" src="js/motion_detection.js"></script>
+
+</body>
+
+</html>

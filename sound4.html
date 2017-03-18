@@ -40,11 +40,11 @@ function addBall(_x, _y){
 
 function draw(){
 
-  ctx.background(250);
+  ctx.background(250, 0.1);
 
   for (var i = 0; i < Sound.freqs.length; i++) {
-    if (Sound.freqs[i] > 100) {
-      addBall(w/2, h/2);
+    if (Sound.freqs[i] > 10) {
+      addBall(map(Sound.freqs[i], 0, 200, 0, w), h/2);
     }
   }
 
@@ -71,7 +71,7 @@ function Ball(_x, _y, _i){
   this.me = _i;
   this.block_size = 10;
   this.speed_x = random(-5, 5);
-  this.speed_y = random(-5, -1);
+  this.speed_y = random(-5, 5);
   this.c = rgb(random(255), 0, 0);
 
 
@@ -83,7 +83,7 @@ function Ball(_x, _y, _i){
   this.moveBall = function(){
     this.x += this.speed_x;
     this.y += this.speed_y;
-    this.speed_y += 0.4;
+    //this.speed_y += 0.4;
     this.block_size -= 0.1;
 
     if (this.x > width || this.x < 0  || this.y > height || this.y < 0 || this.block_size < 1 ) {
