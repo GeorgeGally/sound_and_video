@@ -1,48 +1,60 @@
-
 var TWO_PI = Math.PI * 2;
 
 var p = CanvasRenderingContext2D.prototype;
-// p.stroke = true;
-// p.fill = true;
-//
-// p.noStroke = function () {
-//   this.stroke = false;
-// }
-//
-// p.noFill = function () {
-//   this.fill = false;
-// }
-//
+
+
+p.mirror = function(_side){
+
+  var side = _side || 1;
+  var input = ctx.getImageData(0, 0, w, h);
+  var output = ctx.createImageData(w, h);
+  var inputData = input.data;
+  var outputData = output.data
+   // loop
+   if (side ==1) {
+   for (var y = 0; y < h-1; y += 1) {
+       for (var x = 0; x < w/2; x += 1) {
+         // RGB
+         var i = (y*w + x)*4;
+         var flip = (y*w + (w/2 - x))*4;
+         for (var c = 0; c < 4; c += 1) {
+            outputData[i+c] = inputData[flip+c];
+         }
+       }
+   }
+   this.putImageData(output, w/2, 0);
+  } else {
+    for (var y = 0; y < h/2; y += 1) {
+      for (var x = 1; x < w; x += 1) {
+        var i = (y*w + x)*4;
+        var flip = ((h/2-y)*w + x)*4;
+        for (var c = 0; c < 4; c += 1) {
+          outputData[i+c] = inputData[flip+c];
+        }
+      }
+    }
+    this.putImageData(output, 0, h/2);
+  }
+}
+
+
+p.colour = function (r, g, b, a){
+  'use strict';
+  this.fillStyle = this.getColour(r, g, b, a);
+};
+
 // p.fill = function (r, g, b, a) {
-//   this.fill = true;
-//   p.colour(r, g, b, a);
-// }
-//
-p.Fill = function (r, g, b, a) {
-  var c = this.getColour(r, g, b, a);
-  this.fillStyle = c;
-}
-
-p.Stroke = function (r, g, b, a) {
-  var c = this.getColour(r, g, b, a);
-  this.strokeStyle = c;
-}
-//
-//
-// p.Rect = function (_x, _y, _w, _h) {
-//   if (this.fill) this.fillRect(_x, _y, _w, _h);
-//   if (this.stroke) this.strokeRect(_x, _y, _w, _h);
-// }
-//
-// p.colour = function (r, g, b, a){
 //   'use strict';
-//   var c = this.getColour(r, g, b, a);
-//   this.fillStyle = c;
-// };
+//   this.fillStyle = this.getColour(r, g, b, a);
+// }
 
+p.lineStyle = function (r, g, b, a){
+  'use strict';
+  this.strokeStyle = this.getColour(r, g, b, a);
+};
 
 p.lineColour = function (r, g, b, a){
-  console.log(r);
+  'use strict';
   this.strokeStyle = this.getColour(r, g, b, a);
 };
 
@@ -52,6 +64,8 @@ p.colourName = function (c){
 };
 
 p.getColour = function (r, g, b, a){
+  'use strict';
+  var c;
 
   if((typeof r === 'string' || r instanceof String) && r.substr(0,1) == "#") {
 
@@ -62,6 +76,7 @@ p.getColour = function (r, g, b, a){
   return r;
 
   } else if (g == undefined) {
+
     c = rgb(r, r, r);
 
   } else if (b == undefined && a == undefined) {
@@ -118,7 +133,6 @@ p.circleH = function(x, y, width, height) {
 };
 
 p.ellipse = function(x, y, width, height) {
-  'use strict';
  if (height == undefined) { height = width; }
  this.beginPath();
  for(var i=0; i<Math.PI*2; i+=Math.PI/16) {
@@ -128,17 +142,15 @@ p.ellipse = function(x, y, width, height) {
 };
 
 p.Hellipse = function(x, y, width, height) {
- 'use strict';
  if (height == undefined) { height = width; }
  this.beginPath();
  for(var i=0;i<Math.PI*2;i+=Math.PI/64) {
  this.lineTo(x+(Math.cos(i)*width/2), y+(Math.sin(i)*height/2));
  }
- this.closePath();
+ //this.closePath();
 };
 
 p.fillEllipse = function(x, y, width, height) {
- 'use strict';
  if (height == undefined) height = width;
  this.ellipse(x,y,width, height);
  this.fill();
@@ -185,11 +197,12 @@ p.line = function (x1, y1, x2, y2){
  this.moveTo(x1,y1);
  this.lineTo(x2,y2);
  this.stroke();
- this.beginPath();
+ this.closePath();
 };
 
 
 p.strokePolygon = function (x, y, sides, size) {
+ 'use strict';
  this.polygon(x, y, sides, size);
  this.stroke();
 }
@@ -200,20 +213,13 @@ p.fillPolygon = function (x, y, sides, size){
  this.fill();
 }
 
-
-p.outlinedPolygon = function (_x, _y, _sides, _size, _fill, _stroke){
-  this.fillStyle = _fill;
-  this.fillPolygon(_x, _y, _sides, _size);
-  this.strokeStyle = _stroke;
-  this.strokePolygon(_x, _y, _sides, _size);
-}
-
-
-p.polygon = function (_x, _y, sides, size){
+p.polygon = function (x, y, sides, size){
+ Xcenter = x;
+ Ycenter = y;
  this.beginPath();
- this.moveTo (_x +  size * Math.cos(0), _y +  size *  Math.sin(0));
+ this.moveTo (Xcenter +  size * Math.cos(0), Ycenter +  size *  Math.sin(0));
  for (var i = 1; i <= sides; i += 1) {
-    this.lineTo (_x + size * Math.cos(i * 2 * Math.PI / sides), _y + size * Math.sin(i * 2 * Math.PI / sides));
+    this.lineTo (Xcenter + size * Math.cos(i * 2 * Math.PI / sides), Ycenter + size * Math.sin(i * 2 * Math.PI / sides));
   }
 }
 
@@ -264,9 +270,9 @@ p.eqDownFillTriangle = function(x, y, sz, down) {
 
 p.eqDownTriangle = function(x, y, sz, down) {
  this.translate(x, y);
- this.rotate(radians(180));
+ if (!down) this.rotate(radians(180));
  this.triangle(0, 0 - sz, 0 + sz, 0 + sz/2, 0 - sz, 0 + sz/2);
- this.rotate(radians(-180));
+ if (!down) this.rotate(radians(-180));
  this.translate(-x, -y);
 }
 
@@ -280,24 +286,27 @@ p.eqTriangle = function(x, y, sz, down) {
 
 
 p.background = function (r, g, b, a){
-
- var c = this.getColour(r, g, b, a);
- this.fillStyle = c;
+  var c = this.getMyCurrentFill();
+ this.fillStyle = this.getColour(r, g, b, a);
  this.fillRect(0, 0, w, h);
+ this.fillStyle = c;
 
 };
 
-p.rotateDegrees = function(deg){
-  this.rotate(radians(deg));
+p.getMyCurrentFill = function() {
+  //console.log(ctx.fillStyle);
+  var r = parseInt(ctx.fillStyle.substring(1,3), 16);
+  var g = parseInt(ctx.fillStyle.substring(3,5), 16);
+  var b = parseInt(ctx.fillStyle.substring(5), 16);
+  return rgb(r,g,b);
 }
 
-p.rotateDeg = function(deg){
-  this.rotate(radians(deg));
-}
+
+
 
 function radians(deg) {return deg*Math.PI/180;};
 
-function degrees(rad) {return rad*180/Math.PI;};
+function degrees(rad) {return (rad*180/Math.PI)%360;};
 
 function degreesToPoint(deg, diameter) {
     var rad = Math.PI * deg / 180;
@@ -305,8 +314,12 @@ function degreesToPoint(deg, diameter) {
     return {x: r * Math.cos(rad), y: r * Math.sin(rad)};
 }
 
-function distributeAngles(me, total) {
-    return me/total * 360;
+p.rotateDegrees = function(deg){
+  this.rotate(radians(deg));
+}
+
+p.rotateDeg = function(deg){
+  this.rotate(radians(deg));
 }
 
 
@@ -350,7 +363,6 @@ function rgb(r, g, b) {
 
 };
 
-
 function rgba(r, g, b, a) {
   if (g == undefined) {
    return 'rgb('+clamp(Math.round(r),0,255)+', '+clamp(Math.round(r),0,255)+', '+clamp(Math.round(r),0,255)+')';
@@ -363,12 +375,16 @@ return 'rgba('+clamp(Math.round(r),0,255)+', '+clamp(Math.round(g),0,255)+', '+c
  }
 };
 
-function hsl(h, s, l) { return 'hsl('+h+', '+clamp(s,0,100)+'%, '+clamp(l,0,100)+'%)';};
+function hsl(h, s, l) {
+  return 'hsl('+h+', '+clamp(s,0,100)+'%, '+clamp(l,0,100)+'%)';
+};
+
 function hsla(h, s, l, a) { return 'hsla('+h+', '+clamp(s,0,100)+'%, '+clamp(l,0,100)+'%, '+clamp(a,0,1)+')';};
 
-function brightness(r, g, b){
-      return Math.floor(rgbToHsl(r, g, b)[2]*100);
-    };
+function brightness(r, g, b, _scale){
+      var scale = _scale || 100;
+      return Math.floor(rgbToHsl(r, g, b)[2]*scale);
+};
 
 function rgbToHsl(r, g, b){
     r /= 255, g /= 255, b /= 255;
@@ -432,8 +448,40 @@ function hslToRgb(h, s, l){
 }
 
 
+function random(min, max) {
+ if(min===undefined) {
+  min = 0;
+  max = 1;
+ } else if(max=== undefined) {
+  max = min;
+  min = 0;
+ }
+ return (Math.random() * (max-min)) + min;
+};
 
 
+function randomInt(min, max) {
+  if(max===undefined) {
+    max = min;
+    min = 0;
+  }
+  return Math.floor(Math.random() * (max+1-min)) +min;
+}
+
+function randomWhole(min, max) {
+  return posNeg() * random(min, max);
+}
+
+function randomWholeInt(min, max) {
+  return posNeg() * randomInt(min, max);
+}
+
+function randomColour(){
+  var r = randomInt(255);
+  var g = randomInt(255);
+  var b = randomInt(255);
+  return rgb(r,g,b);
+}
 
 
 function map(value, min1, max1, min2, max2, clampResult) {
@@ -461,37 +509,6 @@ function dist(x1, y1, x2, y2) {
  return Math.sqrt((x2*x2) + (y2*y2));
 }
 
-function random(min, max) {
- if(min===undefined) {
-  min = 0;
-  max = 1;
- } else if(max=== undefined) {
-  max = min;
-  min = 0;
- }
- return (Math.random() * (max-min)) + min;
-};
-
-
-function randomP(min, max) {
- if(min===undefined) {
-  min = 0.1;
-  max = 1;
- } else if(max=== undefined) {
-  max = min;
-  min = 0.1;
- }
- return (Math.random() * (max-min)) + min;
-};
-
-
-function randomInt(min, max) {
- if(max===undefined) {
- max = min;
- min = 0;
- }
- return Math.floor(Math.random() * (max+1-min)) +min;
-}
 
 
 function tween(pos, target, speed){
@@ -508,7 +525,33 @@ function posNeg(){
  return randomInt(0,1) * 2 - 1;
 }
 
-function angle(cx, cy, ex, ey) {
+function sticky(num, clamper){
+  return Math.round(num/clamper)*clamper;
+}
+
+function ave(num, clamper){
+  return Math.round(num/clamper)*clamper;
+}
+
+function randomGrey(){
+  return rgb(sticky(randomInt(240),10));
+}
+
+
+function greyscale(data){
+  for(var y = 0; y < data.height; y++){
+        for(var x = 0; x < data.width; x++){
+            var i = (y * 4) * data.width + x * 4;
+            var avg = (data.data[i] + data.data[i + 1] + data.data[i + 2]) / 3;
+            data.data[i] = avg;
+            data.data[i + 1] = avg;
+            data.data[i + 2] = avg;
+        }
+    }
+    return data;
+}
+
+function getAngle(cx, cy, ex, ey) {
   var dy = ey - cy;
   var dx = ex - cx;
   var theta = Math.atan2(dy, dx); // range (-PI, PI]
@@ -517,6 +560,11 @@ function angle(cx, cy, ex, ey) {
   if (theta == 360) theta = 0;
   return theta;
 }
+
+function distributeAngles(me, total) {
+    return me/total * 360;
+}
+
 
 function bounce(num, min, max, sz) {
   if (sz === undefined) {
@@ -529,7 +577,6 @@ function bounce(num, min, max, sz) {
   }
  //return num > max ? -1 : num < min ? -1 : 1
 }
-
 
 // Adapted from https://github.com/psalaets/line-intersect/
 function checkIntersection( x1, y1, x2, y2, x3, y3, x4, y4 ) {
@@ -560,6 +607,33 @@ if( denom === 0 || (numeA === 0 && numeB === 0) ) {
  (uA * (y2 - y1)) + y1
  ]
  }
+}
+
+
+function selfHit(p){
+
+  	for (var i = 0; i < balls.length; i++) {
+  		if (i != p.me) {
+
+  			p2 = balls[i];
+
+  			if (hittestBall(p, p2)) {
+  				p.speedx *= -1;
+  				p.speedy *= -1;
+  				p2.speedx *= -1;
+  				p2.speedy *= -1;
+  			}
+  		}
+
+  		}
+      return p;
+}
+
+function hittestBall(p, p2){
+
+      if(p.x > p2.x - p2.sz  && p.x <  p2.x + p2.sz  && p.y > p2.y - p2.sz  && p.y < p2.y + p2.sz) {
+        return true;
+      }
 }
 
 
@@ -627,11 +701,11 @@ function pointCircleCollide(point, circle, r) {
 }
 
 
-function cross(_x, _y, _w, _h){
+p.cross = function (_x, _y, _w, _h){
  if (_w === undefined) _w =20;
  if (_h === undefined) _h =60;
- ctx.fillRect( _x - _w/2, _y - _h/2,  _w, _h);
- ctx.fillRect( _x - _h/2, _y - _w/2,  _h, _w);
+ this.fillRect( _x - _w/2, _y - _h/2,  _w, _h);
+ this.fillRect( _x - _h/2, _y - _w/2,  _h, _w);
 }
 
 function makeGrid(_w, _h){
@@ -643,8 +717,126 @@ function makeGrid(_w, _h){
   k++;
   }
 };
-//console.log(grid);
  return grid;
+}
+
+
+function colourPool(){
+
+  this.colours = [];
+  this.weights = [];
+  this.colour_list = [];
+
+  this.add = function(_colour, _weight){
+    if (_weight == undefined) _weight = 1;
+    this.colour_list.push(_colour);
+    this.weights.push(_weight);
+    this.pool  = this.generateWeighedList(this.colour_list, this.weights);
+    return this;
+  }
+
+  this.get = function(){
+    return this.pool[randomInt(this.pool.length-1)];
+  }
+
+  this.generateWeighedList = function(list, weight) {
+    var weighed_list = [];
+
+    // Loop over weights
+    for (var i = 0; i < weight.length; i++) {
+
+        var multiples = weight[i] * 100;
+
+        // Loop over the list of items
+        for (var j = 0; j < multiples; j++) {
+            weighed_list.push(list[i]);
+        }
+    }
+
+    return weighed_list;
+  };
+
+  return this;
+}
+
+
+var Vector = function(_x, _y, _z){
+  this.x = _x || 0;
+  this.y = _y || 0;
+  this.z = _z || 0;
+
+  this.add = function(_vector){
+    this.x += _vector.x || 0;
+    this.y += _vector.y || 0;
+    this.z += _vector.z || 0;
+    return this;
+  }
+
+  this.subtract = function(_vector){
+    this.x -= _vector.x || 0;
+    this.y -= _vector.y || 0;
+    this.z -= _vector.z || 0;
+    return this;
+  }
+
+  this.subtr = function(_vector2){
+    var v = new Vector();
+    v.x = this.x - _vector2.x || 0;
+    v.y = this.y - _vector2.y || 0;
+    v.z = this.z - _vector2.z || 0;
+    return v;
+  }
+
+  this.multiply = function(_vector){
+    this.x *= _vector.x || 0;
+    this.y *= _vector.y || 0;
+    this.z *= _vector.z || 0;
+    return this;
+  }
+
+  this.divide = function(_vector){
+    this.x /= _vector.x || 1;
+    this.y /= _vector.y || 1;
+    this.z /= _vector.z || 1;
+    return this;
+  }
+
+  this.angle = function(x1, x2){
+    return degrees(Math.atan2(this.x - x1, this.y - y2)) || degrees(Math.atan2(this.y/this.y));
+  }
+
+  this.velocity = function(){
+    return Math.sqrt(this.x * this.x + this.y * this.y);
+  }
+
+  // return the angle of the vector in radians
+  this.getDirection = function() {
+  	return Math.atan2(this.y, this.x);
+  };
+
+  // set the direction of the vector in radians
+  this.setDirection = function(direction) {
+  	var magnitude = this.getMagnitude();
+    this.x = Math.cos(angle) * magnitude;
+    this.y = Math.sin(angle) * magnitude;
+  };
+
+  // get the magnitude of the vector
+  this.getMagnitude = function() {
+  	// use pythagoras theorem to work out the magnitude of the vector
+    //console.log("y: "+ this.y * this.y);
+  	return Math.sqrt((this.x * this.x) + (this.y * this.y));
+  };
+
+  // set the magnitude of the vector
+  this.setMagnitude = function(magnitude) {
+  	var direction = this.getDirection();
+  	this.x = Math.cos(direction) * magnitude;
+  	this.y = Math.sin(direction) * magnitude;
+  };
+
+  return this;
+
 }
 
 function createGrid(_gw, _gh, _w, _h){
@@ -673,9 +865,102 @@ function createGrid(_gw, _gh, _w, _h){
 
 }
 
+
+function Grid(_num_items_horiz, _num_items_vert, _grid_w, _grid_h, _startx, _starty){
+
+  if (_num_items_horiz == undefined) _num_items_horiz = 1;
+  if (_num_items_vert == undefined) _num_items_vert = 1;
+  var _horiz = _num_items_horiz || 1;
+  var _vert = _num_items_vert || 1;
+  this.length = 0;
+  this.spacing_x;
+  this.spacing_y;
+
+  this.num_items_horiz = 0;
+  this.num_items_vert = 0;
+
+  this.start = {x: _startx || 0 , y: _starty || 0};
+
+  this.grid_w = _grid_w || window.innerWidth;
+  this.grid_h = _grid_h || window.innerHeight;
+
+  this.x = [];
+  this.y = [];
+
+  this.add = function(_horiz, _vert) {
+
+    this.num_items_horiz += _horiz || 1;
+    this.num_items_vert += _vert || 1;
+
+    this.spacing_x = this.grid_w / this.num_items_horiz;
+    this.spacing_y = this.grid_h / this.num_items_vert;
+
+    this.createGrid();
+
+    return this;
+
+  }
+
+
+  this.setStart = function(_x, _y) {
+
+     this.start = {x: _x || 0 , y: _y || 0};
+     createGrid();
+
+  }
+
+  this.createGrid = function() {
+    console.log("createGrid");
+    for (var _y = 0; _y < this.num_items_vert; _y++) {
+
+      for (var _x = 0; _x < this.num_items_horiz; _x++) {
+
+        this.x.push(_x*this.spacing_x+ this.spacing_x/2);
+        this.y.push(_y*this.spacing_y+ this.spacing_y/2);
+
+      }
+    };
+    this.length = this.num_items_vert * this.num_items_horiz;
+  }
+
+  this.add(_horiz, _vert);
+
+  //console.log(this);
+  return this;
+
+}
+
+
 ////// EFFECTS
 
-function pixelate(blocksize,blockshape) {
+p.pixelate = function (blocksize) {
+
+  if (blocksize == undefined) blocksize = 20;
+  var imgData=this.getImageData(0,0,w,h);
+
+  this.clearRect(0,0,w,h);
+
+    var sourceBuffer32 = new Uint32Array(imgData.data.buffer);
+    for(var x = 0; x < w; x += blocksize)
+    {
+        for(var y = 0; y < h; y += blocksize)
+        {
+
+          var pos = (x + y * w);
+          var b = (sourceBuffer32[pos] >> 16) & 0xff;
+          var g = (sourceBuffer32[pos] >> 8) & 0xff;
+          var r = (sourceBuffer32[pos] >> 0) & 0xff;
+          ctx.fillStyle = rgb(r,g,b);
+          ctx.fillRect(x, y, blocksize, blocksize);
+
+        }
+    }
+
+}
+
+
+function pixelate(blocksize,blockshape, _ctx) {
+  if (_ctx == undefined) _ctx = ctx;
   if (blockshape == undefined) blockshape = 0;
   if (blocksize == undefined) blocksize = 20;
   var imgData=ctx.getImageData(0,0,w,h);
@@ -727,6 +1012,75 @@ function pixelate(blocksize,blockshape) {
 
 }
 
+p.posterize = function(blocksize, ammt) {
+ if (ammt == undefined) ammt = 0;
+
+ if (blocksize == undefined) blocksize = 20;
+
+ ammt = Math.floor(ammt);
+ blocksize = Math.floor(blocksize);
+
+ var imgData=this.getImageData(0,0,w,h);
+
+ this.clearRect(0,0,w,h);
+
+ var sourceBuffer32 = new Uint32Array(imgData.data.buffer);
+
+ for (var x = 0; x < w; x += blocksize) {
+
+   for (var y = 0; y < h; y += blocksize) {
+
+         var pos = (x + y * w);
+         var b = (sourceBuffer32[pos] >> 16) & 0xff;
+         var g = (sourceBuffer32[pos] >> 8) & 0xff;
+         var r = (sourceBuffer32[pos] >> 0) & 0xff;
+         r = sticky(r, ammt);
+         g = sticky(g, ammt);
+         b = sticky(b, ammt);
+         this.fillStyle = rgb(r,g,b);
+         this.fillRect(x, y, blocksize, blocksize);
+
+       }
+   }
+
+}
+
+ p.theshhold = function(blocksize, ammt ,flip) {
+  if (ammt == undefined) ammt = 0;
+
+  if (blocksize == undefined) blocksize = 20;
+  if (flip == undefined) flip = false;
+
+  ammt = Math.floor(ammt);
+  blocksize = Math.floor(blocksize);
+
+  var imgData=this.getImageData(0,0,w,h);
+
+  this.clearRect(0,0,w,h);
+
+  var sourceBuffer32 = new Uint32Array(imgData.data.buffer);
+
+  for (var x = 0; x < w; x += blocksize) {
+
+    for (var y = 0; y < h; y += blocksize) {
+
+          var pos = (x + y * w);
+          var b = (sourceBuffer32[pos] >> 16) & 0xff;
+          var g = (sourceBuffer32[pos] >> 8) & 0xff;
+          var r = (sourceBuffer32[pos] >> 0) & 0xff;
+          r = sticky(r, ammt);
+          g = sticky(g, ammt);
+          b = sticky(b, ammt);
+          this.fillStyle = rgb(r, g, b);
+          // if(brightness(r,g,b) < ammt) {
+          // this.fillStyle = rgb(0);
+          this.fillRect(w-x, y, blocksize, blocksize);
+          // }
+
+        }
+    }
+
+}
 
 
 function pixelShuffle(blockwidth, blockheight, freq, x1, y1, x2, y2) {
@@ -761,47 +1115,6 @@ function pixelShuffle(blockwidth, blockheight, freq, x1, y1, x2, y2) {
     }
 
 }
-
-
-// function pixelShuffle(blockwidth, blockheight, freq, x1, y1, x2, y2) {
-
-//   if (x1 === undefined) {
-//     x1 = 0; y1 = 0; x2 = w; y2 = h;
-//   }
-
-
-
-//   if (freq == undefined) freq = 20;
-//   if (blockwidth == undefined) blockwidth = 20;
-//   if (blockheight == undefined) blockheight = blockwidth;
-
-//     var imgData=ctx.getImageData(0,0,x2,y2);
-//     //ctx.clearRect(0,0,w,h);
-//     //var sourceBuffer8 = new Uint8Array(imgData.data.buffer);
-//     //var sourceBuffer8 = new Uint8ClampedArray(imgData.data.buffer);
-//     //shuffle(sourceBuffer8, 1);
-//     var sourceBuffer32 = new Uint32Array(imgData.data.buffer);
-
-//     for(var x = x1; x < x2; x += blockwidth) {
-//         for(var y = y2; y < y2; y += blockheight) {
-
-//           var pos = (x + y * x2);
-
-//           if (chance(freq)) {
-//             pos = (pos + randomInt(-100,100)*4) % (x2*y2*4);
-//             //pos = (pos + randomInt(-100,100)*4) % ((x1+x2)*(y1+y2)*4);
-//             var b = (sourceBuffer32[pos] >> 16) & 0xff;
-//             var g = (sourceBuffer32[pos] >> 8) & 0xff;
-//             var r = (sourceBuffer32[pos] >> 0) & 0xff;
-//             ctx.fillStyle = rgba(r,g,b, 0.9);
-//             ctx.fillRect(x, y, blockwidth, blockheight);
-
-//           }
-//         };
-
-//     }
-
-// }
 
 
 
@@ -898,14 +1211,16 @@ function triangulate(grid_w, grid_h, alpha) {
 
 // MIRROR THE CANVAS
 
-function mirror(){
+function mirror(_side){
 
+  var side = _side || 1;
   var input = ctx.getImageData(0, 0, w, h);
   var output = ctx.createImageData(w, h);
   var inputData = input.data;
   var outputData = output.data
    // loop
-   for (var y = 1; y < h-1; y += 1) {
+   if (side ==1) {
+   for (var y = 0; y < h-1; y += 1) {
        for (var x = 0; x < w/2; x += 1) {
          // RGB
          var i = (y*w + x)*4;
@@ -916,9 +1231,79 @@ function mirror(){
        }
    }
    ctx.putImageData(output, w/2, 0);
-
+  } else {
+    for (var y = 0; y < h/2; y += 1) {
+      for (var x = 1; x < w; x += 1) {
+        var i = (y*w + x)*4;
+        var flip = ((h/2-y)*w + x)*4;
+        for (var c = 0; c < 4; c += 1) {
+          outputData[i+c] = inputData[flip+c];
+        }
+      }
+    }
+    ctx.putImageData(output, 0, h/2);
+  }
 }
 
+
+
+// function mirror(_side){
+//   var side = _side || 1;
+//   var input = ctx.getImageData(0, 0, w, h);
+//   var output = ctx.createImageData(w, h);
+//   var inputData = input.data;
+//   var outputData = output.data
+//    // loop
+//    if (side ==1) {
+//      for (var y = 1; y < h-1; y += 1) {
+//          for (var x = 0; x < w/2; x += 1) {
+//            // RGB
+//            var i = (y*w + x)*4;
+//            var flip = (y*w + (w/2 - x))*4;
+//            for (var c = 0; c < 4; c += 1) {
+//               outputData[i+c] = inputData[flip+c];
+//            }
+//          }
+//         ctx.putImageData(output, w/2, 0);
+//      }
+//  } else {
+//        for (var x = 1; x < w; x += 1) {
+//          for (var y = 0; y < h/2; y += 1) {
+//          // RGB
+//          var i = (y*w + x)*4;
+//          var flip = ((h-y)*w + x)*4;
+//          for (var c = 0; c < 4; c += 1) {
+//             outputData[i+c] = inputData[flip+c];
+//          }
+//        }
+//    }
+//    ctx.putImageData(output, 0, h/2);
+//  }
+//
+// }
+
+
+function hasClass(el, className) {
+  if (el.classList)
+    return el.classList.contains(className)
+  else
+    return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
+}
+
+function addClass(el, className) {
+  if (el.classList)
+    el.classList.add(className)
+  else if (!hasClass(el, className)) el.className += " " + className
+}
+
+function removeClass(el, className) {
+  if (el.classList)
+    el.classList.remove(className)
+  else if (hasClass(el, className)) {
+    var reg = new RegExp('(\\s|^)' + className + '(\\s|$)')
+    el.className=el.className.replace(reg, ' ')
+  }
+}
 
 
 function ScaleImage(srcwidth, srcheight, targetwidth, targetheight, fLetterBox) {
@@ -966,7 +1351,6 @@ function ScaleImage(srcwidth, srcheight, targetwidth, targetheight, fLetterBox) 
 
 var mousePressed = 0;
 var mouseReleased = 0;
-
 document.onmousedown = function() {
   mousePressed = 1;
   //window.mousePressed();
@@ -977,20 +1361,22 @@ document.onmouseup = function() {
   //window.mouseup();
 }
 
-var mouseSpeedX = mouseSpeedX = 0;
-var mouseX = -100,
- mouseY = 0,
- lastMouseX = 0,
- lastMouseY = 0,
- oldMouseX = 0,
- oldMouseY = 0,
- frameRate = 60,
- frameCount = frameNumber = 0,
- lastUpdate = Date.now(),
- mouseMoved = false,
- mouseDown = false;
+var mouseSpeedX = 0,
+mouseSpeedX = 0,
+mouseX = 0,
+mouseY = 0,
+lastMouseX = 0,
+lastMouseY = 0,
+oldMouseX = 0,
+oldMouseY = 0,
+frameRate = 60,
+frameCount = 0,
+frameNumber = 0,
+lastUpdate = Date.now(),
+mouseDown = false,
+mouseMoved = false;
 
-function cjsloop() {
+function loop() {
 
  var now = Date.now();
  var elapsedMils = now - lastUpdate;
@@ -1000,14 +1386,10 @@ function cjsloop() {
  frameCount++;
  frameNumber++;
  lastUpdate = now - elapsedMils % (1000/window.frameRate );
- mouseSpeedX = mouseX - oldMouseX;
- mouseSpeedY = mouseX - oldMouseX;
- lastMouseX = oldMouseX = mouseX;
- lastMouseY = oldMouseY = mouseY;
  mouseReleased = 0;
  mouseMoved = 0;
  }
- requestAnimationFrame(cjsloop);
+ requestAnimationFrame(loop);
 
 };
 
@@ -1049,8 +1431,14 @@ function cjsloop() {
 function init() {
 
 window.addEventListener('mousemove', function(e) {
+  oldMouseX = mouseX;
+  oldMouseY = mouseY;
   mouseX = e.clientX;
   mouseY = e.clientY;
+  mouseSpeedX = mouseX - oldMouseX;
+  mouseSpeedY = mouseX - oldMouseX;
+  lastMouseX = oldMouseX = mouseX;
+  lastMouseY = oldMouseY = mouseY;
   mouseMoved = true;
 });
 
@@ -1059,7 +1447,26 @@ window.addEventListener('mouseup', function(e){mouseDown = false;if(typeof onMou
 window.addEventListener('keydown', function(e){if(typeof onKeyDown == 'function') onKeyDown(e);});
 window.addEventListener('keyup', function(e){if(typeof onKeyUp == 'function') onKeyUp(e);});
 if(typeof window.setup == 'function') window.setup();
-cjsloop();
+loop();
 }
 
 window.addEventListener('load',init);
+
+
+// loadscript utility
+
+function loadScript(url, callback) {
+    // Adding the script tag to the head as suggested before
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+
+    // Then bind the event to the callback function.
+    // There are several events for cross browser compatibility.
+    script.onreadystatechange = callback;
+    script.onload = callback;
+
+    // Fire the loading
+    head.appendChild(script);
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+    <meta charset="utf-8">
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="js/quicksettings.min.js"></script>
+<script language="javascript" src="js/video.js"></script>
+
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var camera_started = false;
+
+var options = {
+  blocksize: 20,
+  sensitivity: 20
+}
+
+
+function draw(){
+
+  ctx.background(250, 0.1);
+  blocksize = options.blocksize;
+  sensitivity = options.sensitivity;
+  ctx.fillStyle = "#00aeef";
+
+  var motion = motionDetection(blocksize);
+  if(camera_started) {
+
+
+
+    for (var i = 0; i < motion.length; i++) {
+        m = motion[i];
+        //ctx.fillStyle = rgb(m.red, m.red, m.red);
+        //ctx.fillStyle = rgb(m.red, 0, 0);
+        //ctx.fillStyle = rgb(m.red, m.green, 0);
+        ctx.fillStyle = rgb(m.red, m.green, m.blue);
+        ctx.fillEllipse(m.x, m.y, blocksize-2, blocksize-2);
+    }
+
+  }
+
+  if (motion_array.length > 0 && !camera_started) {
+      camera_started = true;
+  }
+
+} // end draw
+
+
+//// QuickSettings
+
+var settings = QuickSettings.create(w-200, 0, "Settings");
+settings.bindRange("blocksize", 10, 100, 20, 1, options);
+settings.bindRange("sensitivity", 1, 100, 20, 1, options);
+
+
+
+
+</script>
+<script language="javascript" src="js/motion_detection.js"></script>
+
+</body>
+
+</html>

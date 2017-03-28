@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+<meta charset="utf-8">
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="js/mic.js"></script>
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+ctx.lineWidth = 1;
+
+// create particles
+var balls = [];
+var number_of_balls = 100;
+var radius = 140;
+
+for (var i = 0; i < number_of_balls; i++) {
+  addBall(i);
+}
+
+function addBall(i){
+  var angle = radians(distributeAngles(i, number_of_balls));
+  var ball = {
+    angle: angle,
+    x: w/2,
+    y: h/2,
+    sz: random(10,80),
+    me: i
+  }
+  balls.push(ball);
+}
+
+
+function draw(){
+  ctx.background(0);
+  for (var i = 0; i < balls.length; i++) {
+    var b = balls[i];
+    moveBall(b);
+    drawBall(b);
+  }
+}
+
+
+function moveBall(b){
+
+    var s = Mic.mapSound(b.me, balls.length, 40, 60);
+    b.sz = tween(b.sz, s, 4);
+    //console.log(b.sz);
+    b.x = tween(b.x, w/2 + Math.cos(b.angle) * (radius + s/4), 10);
+    b.y = tween(b.y, h/2 + Math.sin(b.angle) * (radius + s/4), 10);
+
+}
+
+
+function drawBall(b){
+    ctx.strokeStyle = "white";
+    ctx.strokeEllipse(b.x, b.y, b.sz, b.sz);
+    ctx.fillStyle = "white";
+    ctx.fillEllipse(b.x, b.y, 4, 4);
+}
+
+
+function distributeAngles(me, total) {
+    return me/total * 360;
+}
+
+
+</script>
+
+</body>
+
+</html>

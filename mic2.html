@@ -6,7 +6,7 @@
 
 <script language="javascript" src="js/creative_coding.js"></script>
 <script language="javascript" src="js/canvas.js"></script>
-<script language="javascript" src="js/video.js"></script>
+<script language="javascript" src="js/mic.js"></script>
 <script language="javascript" src="js/vector.js"></script>
 <script language="javascript" src="js/vector_particles.js"></script>
 <script language="javascript" src="js/quicksettings.min.js"></script>
@@ -19,11 +19,52 @@
 
 <script>
 
-
 var ctx = createCanvas("canvas1");
+
+
+
+function draw(){
+
+  ctx.background(255);
+
+  // TRY CHANGING THE START POSITION X
+  var start_position_x = random(w);
+  //var start_position_x = w/2;
+
+  // TRY CHANGING THE START POSITION Y
+  //var start_position_y = random(h);
+  var start_position_y = h/2;
+
+  // TRY CHANGING THE COLOURS
+  // var colour = rgb(random(255), 0, 0);
+  //var colour = rgb(random(255), 0, random(255));
+  var colour = rgb(random(255), random(255), random(255));
+  //var colour = rgb(0, random(55), random(255));
+
+  addParticles(start_position_x, start_position_y, colour);
+  drawParticles();
+
+}
+
+
+function drawParticles(){
+
+	for (var i = 0; i < engine.particles.length; i++) {
+
+		p = engine.particles[i];
+		ctx.fillStyle = p.c;
+		ctx.fillEllipse(p.pos.x, p.pos.y, p.sz, p.sz);
+	}
+
+}
+
+
+// DON'T REALLY NEED TO CHANGE ANYTHING BELOW HERE
 
 var balls = [];
 var engine = new particleEngine(0);
+var SAMPLE_SIZE = 256;
+
 
 var options = {
   resolution: 20,
@@ -38,70 +79,24 @@ var options = {
 }
 
 
+function addParticles(start_position_x, start_position_y, colour){
+  sensitivity = settings.getValue('sensitivity');
 
-function draw(){
+  for (var i = 0; i < SAMPLE_SIZE; i++) {
 
+    var s = Mic.spectrum[i];
 
-  ctx.drawImage(video,0,0,w,h);
-  getData();
-  ctx.background(0);
-
-  for(var x = 0; x < w; x += resolution) {
-
-    for(var y = 0; y < h; y += resolution) {
-      var colour = getColour(x,y);
-
-      // TRY CHANGE THESE COLOURS
-      //ctx.fillStyle = rgb(colour.red, 0, 0);
-      //ctx.fillStyle = rgb(colour.red);
-      ctx.fillStyle = rgb(colour.red, colour.green, colour.blue);
-
-      // TRY CHANGE THESE SHAPES
-      //ctx.fillRect(x, y, resolution, resolution);
-      //ctx.fillEllipse(x, y, resolution, resolution);
-      //ctx.fillPolygon(x, y, 4, resolution);
-      var c = rgb(colour.red, colour.blue, colour.green);
-      engine.addParticle(x, y, c);
-
+    if (s > sensitivity) {
+      engine.addParticle(start_position_x, start_position_y, colour);
     }
 
   }
-
   engine.draw();
-  drawParticles();
   updateSliders();
-}
-
-function drawParticles(){
-
-	for (var i = 0; i < engine.particles.length; i++) {
-
-		p = engine.particles[i];
-		ctx.fillStyle = p.c;
-		ctx.fillEllipse(p.pos.x, p.pos.y, p.sz, p.sz);
-	}
 
 }
 
 
-//// YOU DON'T REALLY WANT TO TOUCH ANYTHING BELOW HERE
-
-function getData(){
-  imgData = ctx.getImageData(0,0,w,h);
-  sourceBuffer32 = new Uint32Array(imgData.data.buffer);
-  resolution = settings.getValue('resolution');
-}
-
-function getColour(x, y) {
-
-      var pos = (x + y * w);
-      var b = (sourceBuffer32[pos] >> 16) & 0xff;
-      var g = (sourceBuffer32[pos] >> 8) & 0xff;
-      var r = (sourceBuffer32[pos] >> 0) & 0xff;
-
-      return {red: r, green: g, blue: b};
-
-}
 
 
 //// QuickSettings
@@ -115,10 +110,10 @@ settings.bindRange("randomize_x", 0.1, 50, 0, 0.1, options);
 settings.bindRange("randomize_y", 0.1, 50, 0, 0.1, options);
 settings.bindRange("life", 0.01, 2, 0.98, 0.01, options);
 settings.bindRange("max_particles", 10, 10000, 1500, 1, options);
-settings.bindRange("resolution", 10, 100, 20, 1, options);
+settings.addRange("sensitivity", 0, 400, 80, 1);
 
 function updateSliders(){
-
+  sensitivity = options.sensitivity;
   engine.start_size = options.start_size;
   engine.speed_max_x = options.speed_max_x;
   engine.speed_max_y = options.speed_max_y;
@@ -130,7 +125,6 @@ function updateSliders(){
 
 
 </script>
-
 </body>
 
 </html>

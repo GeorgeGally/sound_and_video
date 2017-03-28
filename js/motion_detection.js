@@ -28,8 +28,8 @@ function motionDetection(_samplesize){
 			var b = buffer[pos] >> 16 & 0xff;
 
   			if (Math.abs(r-old[pos]) > sensitivity) {
-  				var c = new Vector(r,g,b);
-  				motion_array.push(new Vector(w-x,y,c));
+  				var c = rgb(r,g,b);
+  				motion_array.push({x: x, y: y, red: r, green: g, blue: b, colour: c});
   			}
 
   			old[pos] = r;

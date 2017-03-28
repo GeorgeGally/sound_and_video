@@ -5,7 +5,7 @@
     <meta charset="utf-8">
 <script language="javascript" src="js/creative_coding.js"></script>
 <script language="javascript" src="js/canvas.js"></script>
-<script language="javascript" src="js/vector.js"></script>
+<script language="javascript" src="js/quicksettings.min.js"></script>
 <script language="javascript" src="js/video.js"></script>
 
 <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
@@ -20,33 +20,19 @@
 var ctx2 = createCanvas("canvas2");
 var ctx = createCanvas("canvas1");
 
-var block_size = 20;
+var options = {
+  blocksize: 20,
+  sensitivity: 20
+}
+
+
 var maxballs = 1500;
 var balls = [];
 
 
-function removeBall(){
-  balls.splice(0,1);
-}
-
-function update(){
-
-  motion = motionDetection(20);
-
-  for (var i = 0; i < motion.length; i++) {
-    m = motion[i];
-    balls.push(new Ball(m.x, m.y, i));
-    if (balls.length > maxballs) {
-    removeBall();
-    }
-  } // end for loop
-
-}
-
-
 function draw(){
 
-  ctx.background(250);
+  ctx.background(250, transparency);
 
   update();
 
@@ -58,6 +44,31 @@ function draw(){
   } // end for loop
 
 } // end draw
+
+
+
+function removeBall(){
+  balls.splice(0,1);
+}
+
+function update(){
+
+  blocksize = options.blocksize;
+  sensitivity = options.sensitivity;
+  maxballs = options.maxballs;
+  transparency = options.transparency;
+  motion = motionDetection(blocksize);
+
+  for (var i = 0; i < motion.length; i++) {
+    m = motion[i];
+    balls.push(new Ball(m.x, m.y, i));
+    if (balls.length > maxballs) {
+    removeBall();
+    }
+  } // end for loop
+
+}
+
 
 
 
@@ -75,19 +86,17 @@ function Ball(_x, _y, _i){
   this.speed_y = random(-5, -1);
   this.c = rgb(random(255), 0, 0);
 
-
   this.drawBall = function(){
     ctx.fillStyle = this.c;
-    //ctx.fillEllipse(this.x, this.y, this.block_size, this.block_size);
-
-    //ctx.fillEllipse(this.start_x, this.start_y, 10, 10);
     ctx.line(this.start_x, this.start_y, this.x, this.y);
   }
+
   this.moveBall = function(){
     this.x += this.speed_x;
     this.y += this.speed_y;
     this.speed_y += 0.4;
     this.block_size -= 0.1;
+    this.start_y += 0.8;
 
     if (this.x > width || this.x < 0  || this.y > height || this.y < 0 || this.block_size < 1 ) {
       balls.splice(0, 1);
@@ -96,6 +105,14 @@ function Ball(_x, _y, _i){
 
 }
 
+
+//// QuickSettings
+
+var settings = QuickSettings.create(w-200, 0, "Settings");
+settings.bindRange("transparency", 0, 1, 0.5, 0.01, options);
+settings.bindRange("blocksize", 10, 100, 20, 1, options);
+settings.bindRange("sensitivity", 1, 100, 20, 1, options);
+settings.bindRange("maxballs", 100, 50000, 1500, 10, options);
 
 
 

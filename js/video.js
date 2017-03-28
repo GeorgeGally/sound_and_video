@@ -123,7 +123,7 @@ video.addEventListener('loadeddata', function() {
 
     devices.forEach(function(device) {
 
-        // console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
+    //console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
 
         if (device.kind === 'videoinput') {
           //console.log(device.deviceId);

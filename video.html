@@ -3,13 +3,14 @@
 <title>Creative Coding Yea!</title>
 <head>
     <meta charset="utf-8">
-
 <script language="javascript" src="js/creative_coding.js"></script>
 <script language="javascript" src="js/canvas.js"></script>
 <script language="javascript" src="js/video.js"></script>
+<script language="javascript" src="js/quicksettings.min.js"></script>
 
 <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
 
 </head>
 <body>
@@ -18,14 +19,65 @@
 
 var ctx = createCanvas("canvas1");
 
+var imgData;
+var sourceBuffer32;
+
+
 function draw(){
 
-  ctx.background(250);
-  ctx.drawImage(video, 0, 0, w, h);
 
-  pixelate(20);
-} // end draw
+  ctx.drawImage(video,0,0,w,h);
+  getData();
+  ctx.background(0);
 
+  for(var x = 0; x < w; x += resolution) {
+
+    for(var y = 0; y < h; y += resolution) {
+      var colour = getColour(x,y);
+
+      // TRY CHANGE THESE COLOURS
+      //ctx.fillStyle = rgb(colour.red, 0, 0);
+      //ctx.fillStyle = rgb(colour.red);
+      ctx.fillStyle = rgb(colour.red, colour.green, colour.blue);
+
+      // TRY CHANGE THESE SHAPES
+      ctx.fillRect(x, y, resolution, resolution);
+      //ctx.fillEllipse(x, y, resolution, resolution);
+      //ctx.fillPolygon(x, y, 4, resolution);
+
+    }
+
+  }
+
+
+}
+
+
+//// YOU DON'T REALLY WANT TO TOUCH ANYTHING BELOW HERE
+
+function getData(){
+  imgData = ctx.getImageData(0,0,w,h);
+  sourceBuffer32 = new Uint32Array(imgData.data.buffer);
+  resolution = settings.getValue('resolution');
+}
+
+
+function getColour(x, y) {
+
+      var pos = (x + y * w);
+      var b = (sourceBuffer32[pos] >> 16) & 0xff;
+      var g = (sourceBuffer32[pos] >> 8) & 0xff;
+      var r = (sourceBuffer32[pos] >> 0) & 0xff;
+
+      return {red: r, green: g, blue: b};
+
+}
+
+
+//// QuickSettings
+
+var settings = QuickSettings.create(w-200, 0, "Settings");
+settings.addRange("resolution", 10, 100, 20, 1);
 
 
 

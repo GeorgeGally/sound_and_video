@@ -41,30 +41,12 @@ var options = {
 
 function draw(){
 
+  ctx.background(255);
 
-  ctx.drawImage(video,0,0,w,h);
-  getData();
-  ctx.background(0);
-
-  for(var x = 0; x < w; x += resolution) {
-
-    for(var y = 0; y < h; y += resolution) {
-      var colour = getColour(x,y);
-
-      // TRY CHANGE THESE COLOURS
-      //ctx.fillStyle = rgb(colour.red, 0, 0);
-      //ctx.fillStyle = rgb(colour.red);
-      ctx.fillStyle = rgb(colour.red, colour.green, colour.blue);
-
-      // TRY CHANGE THESE SHAPES
-      //ctx.fillRect(x, y, resolution, resolution);
-      //ctx.fillEllipse(x, y, resolution, resolution);
-      //ctx.fillPolygon(x, y, 4, resolution);
-      var c = rgb(colour.red, colour.blue, colour.green);
-      engine.addParticle(x, y, c);
-
-    }
-
+  var motion = Motion.detect();
+  for (var i = 0; i < motion.length; i++) {
+    m = motion[i];
+    engine.addParticle(m.x, m.y, m.colour);
   }
 
   engine.draw();
@@ -84,26 +66,6 @@ function drawParticles(){
 }
 
 
-//// YOU DON'T REALLY WANT TO TOUCH ANYTHING BELOW HERE
-
-function getData(){
-  imgData = ctx.getImageData(0,0,w,h);
-  sourceBuffer32 = new Uint32Array(imgData.data.buffer);
-  resolution = settings.getValue('resolution');
-}
-
-function getColour(x, y) {
-
-      var pos = (x + y * w);
-      var b = (sourceBuffer32[pos] >> 16) & 0xff;
-      var g = (sourceBuffer32[pos] >> 8) & 0xff;
-      var r = (sourceBuffer32[pos] >> 0) & 0xff;
-
-      return {red: r, green: g, blue: b};
-
-}
-
-
 //// QuickSettings
 
 var settings = QuickSettings.create(w-200, 0, "Settings");
@@ -116,9 +78,12 @@ settings.bindRange("randomize_y", 0.1, 50, 0, 0.1, options);
 settings.bindRange("life", 0.01, 2, 0.98, 0.01, options);
 settings.bindRange("max_particles", 10, 10000, 1500, 1, options);
 settings.bindRange("resolution", 10, 100, 20, 1, options);
+settings.bindRange("sensitivity", 1, 100, 80, 1, options);
+// settings.bindRange("particle_size", 1, 100, 10, 1, options);
 
 function updateSliders(){
-
+  Motion.resolution = options.resolution;
+  Motion.sensitivity = 100 - options.sensitivity;
   engine.start_size = options.start_size;
   engine.speed_max_x = options.speed_max_x;
   engine.speed_max_y = options.speed_max_y;
@@ -130,7 +95,7 @@ function updateSliders(){
 
 
 </script>
-
+<script language="javascript" src="js/motion.js"></script>
 </body>
 
 </html>
