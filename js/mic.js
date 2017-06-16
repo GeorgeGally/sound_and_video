@@ -73,21 +73,24 @@ function Microphone (_fft) {
     this.mapSound = function(_me, _total, _min, _max){
 
       if (self.spectrum.length > 0) {
-
-        var min = _min || 0;
-        var max = _max || 100;
-        //actual new freq
-        var new_freq = Math.round(_me /_total * self.spectrum.length/2);
-
-        //console.log(Math.round(self.peak_volume) + " : " + Math.round(self.spectrum[new_freq]));
-        // map the volumes to a useful number
-        var s = map(self.spectrum[new_freq], 0, self.peak_volume, min, max);
-        //console.log(s);
-        return s;
+        return this.mapSpectrum(self.spectrum, _me, _total, _min, _max)
       } else {
         return 0;
       }
 
+    }
+
+    this.mapSpectrum = function(_freqs, _me, _total, _min, _max){
+      var min = _min || 0;
+        var max = _max || 100;
+        //actual new freq
+        var new_freq = Math.round(_me /_total * _freqs.length);
+
+        //console.log(Math.round(self.peak_volume) + " : " + Math.round(self.spectrum[new_freq]));
+        // map the volumes to a useful number
+        var s = map(_freqs[new_freq], 0, self.peak_volume, min, max);
+        //console.log(s);
+        return s || 0;
     }
 
 
@@ -184,6 +187,21 @@ function Microphone (_fft) {
     var v = map(this.getRMS(this.getMix().bass), 0, self.peak_volume, min, max);
     return v;
   }
+
+
+  this.mapBass = function(){
+        return this.mapSpectrum(this.getMix().bass, _me, _total, _min, _max);
+    }
+
+  this.mapMids = function(){
+        return this.mapSpectrum(this.getMix().mids, _me, _total, _min, _max);
+  }
+
+  this.mapHighs = function(){
+        return this.mapSpectrum(this.getMix().highs, _me, _total, _min, _max);
+  }
+
+
 
   return this;
 

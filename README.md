@@ -1,27 +1,64 @@
 # sound and video reactive workshop
 
+# Mic
+
+The Mic object exposes a number of functions
+
+### Mic.getVol(_max)
+get the total volume mapped to a max value
+
+### Mic.mapSound(me, total, min, max)
+maps a frequency to a new range
+
+### Mic.getHighsVol(_max)
+get the total volume of the highs mapped to a max value
+
+### Mic.getMidsVol(_max)
+get the total volume of the mids mapped to a max value
+
+### Mic.getBassVol(_max)
+get the total volume of the bass mapped to a max value
+
+### Mic.getHighs()
+returns an array of all the highs
+
+### Mic.getMids()
+returns an array of all the highs
+
+### Mic.getBass()
+returns an array of all the highs
+
+### Mic.mapHighs(me, total, min, max)
+maps a high frequency to a new range
+
+### Mic.mapMids(me, total, min, max)
+maps a mid frequency to a new range
+
+
+### Mic.mapBass(me, total, min, max)
+maps a bass frequency to a new range
 
 
 # create a drawing space
 ~ denotes you can leave these out
-###ctx.createCanvas(canvas_id, ~canvas_width, ~canvas_height);
+### ctx.createCanvas(canvas_id, ~canvas_width, ~canvas_height);
 
 
 # Basic Objects
 
-##draw a solid rectangle
+## draw a solid rectangle
 `ctx.fillRect(x, y, width, height);`
 
-##draw a rectangle outline
+## draw a rectangle outline
 `ctx.strokeRect(x, y, width, height);`
 
-##draw a solid circle
+## draw a solid circle
 `ctx.fillEllipse(x, y, width, height);`
 
-##draw a circle outline
+## draw a circle outline
 `ctx.strokeEllipse(x, y, width, height);`
 
-##draw a line
+## draw a line
 `ctx.line(x1, y1, x2, y2);`
 
 
