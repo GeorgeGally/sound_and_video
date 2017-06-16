@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<title>Sound &amp; Motion - George Gally - Radarboy</title>
+<head>
+<meta charset="utf-8">
+
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/mic.js"></script>
+<script language="javascript" src="../js/vector.js"></script>
+<script language="javascript" src="../js/particle_engine.js"></script>
+
+
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var engine = new particleEngine(50, 10);
+console.log(engine);
+engine.bounce = true;
+engine.max_particles = 500;
+
+function draw(){
+
+  ctx.background(255, 0.1);
+  engine.update();
+  drawParticles();
+}
+
+
+function drawParticles(){
+
+	for (var i = 0; i < engine.particles.length; i++) {
+		p = engine.particles[i];
+		ctx.fillStyle = "red";
+		ctx.fillEllipse(p.pos.x, p.pos.y, p.sz, p.sz);
+	}
+
+}
+
+
+
+</script>
+</body>
+
+</html>

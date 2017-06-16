@@ -29,7 +29,7 @@ function motionDetection(_samplesize){
 
   			if (Math.abs(r-old[pos]) > sensitivity) {
   				var c = rgb(r,g,b);
-  				motion_array.push({x: x, y: y, red: r, green: g, blue: b, colour: c});
+  				motion_array.push({x: w - x, y: y, red: r, green: g, blue: b, colour: c});
   			}
 
   			old[pos] = r;

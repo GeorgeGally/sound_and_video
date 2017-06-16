@@ -866,6 +866,10 @@ function createGrid(_gw, _gh, _w, _h){
 }
 
 
+///////////////////////////////////////////
+//////////////// G R I D //////////////////
+///////////////////////////////////////////
+
 function Grid(_num_items_horiz, _num_items_vert, _grid_w, _grid_h, _startx, _starty){
 
   if (_num_items_horiz == undefined) _num_items_horiz = 1;
@@ -881,20 +885,28 @@ function Grid(_num_items_horiz, _num_items_vert, _grid_w, _grid_h, _startx, _sta
 
   this.start = {x: _startx || 0 , y: _starty || 0};
 
-  this.grid_w = _grid_w || window.innerWidth;
-  this.grid_h = _grid_h || window.innerHeight;
+  this.grid_w = _grid_w || w;
+  this.grid_h = _grid_h || h;
 
+  this.width = _grid_w || w;
+  this.height = _grid_h || h;
+
+  this.grid = [];
+  this.edge = [];
   this.x = [];
   this.y = [];
+  this.rows = [];
+  this.cols = [];
+  this.pos = [];
 
   this.add = function(_horiz, _vert) {
 
     this.num_items_horiz += _horiz || 1;
     this.num_items_vert += _vert || 1;
 
-    this.spacing_x = this.grid_w / this.num_items_horiz;
-    this.spacing_y = this.grid_h / this.num_items_vert;
-
+    this.spacing_x = this.width / this.num_items_horiz;
+    this.spacing_y = this.height / this.num_items_vert;
+    this.spacing = new Vector(this.spacing_x, this.spacing_y);
     this.createGrid();
 
     return this;
@@ -910,17 +922,53 @@ function Grid(_num_items_horiz, _num_items_vert, _grid_w, _grid_h, _startx, _sta
   }
 
   this.createGrid = function() {
-    console.log("createGrid");
-    for (var _y = 0; _y < this.num_items_vert; _y++) {
+    var r = 0;
+    this.spacing_x = this.width / this.num_items_horiz;
+    this.spacing_y = this.height / this.num_items_vert;
+    this.spacing = new Vector(this.spacing_x, this.spacing_y);
+    // console.log(this.start.x);
+    // console.log(this.width);
+    this.cols = [];
 
-      for (var _x = 0; _x < this.num_items_horiz; _x++) {
+    for (var y = 0; y < this.num_items_vert; y++) {
 
-        this.x.push(_x*this.spacing_x+ this.spacing_x/2);
-        this.y.push(_y*this.spacing_y+ this.spacing_y/2);
+      var c = 0;
+      var row = [];
+      //this.cols[y] = [];
+      var yy = y * this.spacing_y + this.spacing_y/2 + this.start.y;
+
+
+      for (var x = 0; x < this.num_items_horiz; x++) {
+
+        var edge = false;
+        var xx = x * this.spacing_x + this.spacing_x/2 + this.start.x;
+
+        //console.log(this.start.y);
+        // see if it's a point on the outside
+        if ((y == this.start.y || y == this.num_items_vert) && (x == this.start.x || x == this.num_items_horiz ) ) {
+          edge = true;
+        }
+
+        this.x.push(xx);
+        this.y.push(yy);
+        this.pos.push({row: r, col: c, x: xx, y: yy});
+        row.push({x: xx, y: yy});
+
+        this.edge.push(edge);
+        this.grid.push({row: y, col: x, x: xx, y: yy, edge: edge});
+        c++;
 
       }
+
+      this.cols[y] = {x: this.x[y], y: yy};
+      this.rows[r] = {row: r, items: this.num_items_horiz, pos: row};
+      r++;
+      //console.log(row);
     };
+    //console.log(this.rows);
     this.length = this.num_items_vert * this.num_items_horiz;
+    this.grid.push({row: this.rows, col: this.cols});
+
   }
 
   this.add(_horiz, _vert);
@@ -929,6 +977,7 @@ function Grid(_num_items_horiz, _num_items_vert, _grid_w, _grid_h, _startx, _sta
   return this;
 
 }
+
 
 
 ////// EFFECTS

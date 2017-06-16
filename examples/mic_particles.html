@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+<meta charset="utf-8">
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/mic.js"></script>
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+ctx.lineWidth = 1;
+
+// create particles
+var particles = [];
+var number_of_particles = 100;
+
+for (var i = 0; i < number_of_particles; i++) {
+  addParticle(i);
+}
+
+function addParticle(i){
+  var particle = {
+    x: w/2,
+    y: h/2,
+    speed_x: random(-2, 2),
+    speed_y: random(-2, 2),
+    sz: random(4,18),
+    me: i
+  }
+  particles.push(particle);
+}
+
+
+function draw(){
+  ctx.background(0);
+  for (var i = 0; i < particles.length; i++) {
+    var p = particles[i];
+    moveParticle(p);
+    drawParticle(p);
+  }
+}
+
+
+function moveParticle(p){
+
+    var s = Mic.mapSound(p.me, particles.length, 1, 20);
+    if(s > 0) p.sz = tween(p.sz, s, 4);
+
+    //console.log(b.sz);
+    p.x += p.speed_x;
+    p.y += p.speed_y;
+    if (p.x > w || p.x < 0) p.speed_x *=-1;
+    if (p.y > h || p.y < 0) p.speed_y *=-1;
+}
+
+
+function drawParticle(p){
+    ctx.fillStyle = "white";
+    ctx.fillEllipse(p.x, p.y, p.sz, p.sz);
+}
+
+
+
+</script>
+
+</body>
+
+</html>

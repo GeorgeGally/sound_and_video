@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+    <meta charset="utf-8">
+<script src='http://connect.soundcloud.com/sdk.js'></script>
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/vector.js"></script>
+<script language="javascript" src="../js/particle_engine.js"></script>
+<script language="javascript" src="../js/mic.js"></script>
+
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/audio.css" type="text/css" media="screen" />
+
+</head>
+<body style="background: #000;">
+
+<script>
+
+
+var ctx = createCanvas("canvas1");
+
+var number_of_bars = 150;
+var bar_width = w/number_of_bars;
+
+function draw() {
+  ctx.background(0);
+  for (var i = 0; i < number_of_bars; i++) {
+    var s = Mic.mapSound(i, number_of_bars*2, 4, 150);
+      ctx.fillStyle = rgba(s, 0, 0);
+    ctx.fillRect(i*bar_width, h/2 - s/2, bar_width-1, s);
+  }
+
+}
+
+
+
+
+</script>
+
+</body>
+
+</html>

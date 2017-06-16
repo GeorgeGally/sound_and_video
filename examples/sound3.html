@@ -3,13 +3,13 @@
 <title>Creative Coding Yea!</title>
 <head>
 <meta charset="utf-8">
-<script language="javascript" src="js/soundcloud.js"></script>
-<script language="javascript" src="js/creative_coding.js"></script>
-<script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="../js/soundcloud.js"></script>
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
 
-<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="css/audio.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/audio.css" type="text/css" media="screen" />
 
 </head>
 <body>
@@ -25,7 +25,7 @@ ctx.lineWidth = 2;
 
 var spectrum = new Spectrum();
 
-var bag_of_balls = [];
+var particles = [];
 var max_balls = 10;
 
 var spacing = w/max_balls;
@@ -35,7 +35,7 @@ for (var i = 0; i < max_balls; i++) {
 }
 
 function addBall(_x, _y){
-  bag_of_balls.push(new Ball(_x, _y));
+  particles.push(new Ball(_x, _y));
 }
 
 
@@ -43,10 +43,10 @@ function draw(){
 
   ctx.background(250);
   spectrum.draw();
-  for (var i = 0; i < bag_of_balls.length; i++) {
-    var b = bag_of_balls[i];
-    b.block_size = 10 + Sound.mapSound(i, Math.round(bag_of_balls.length))/2;
-    //b.moveBall();
+  for (var i = 0; i < particles.length; i++) {
+    var b = particles[i];
+    b.block_size = 10 + Sound.mapSound(i, Math.round(particles.length))/2;
+    b.moveBall();
     b.drawBall();
 
   }
@@ -58,7 +58,7 @@ function draw(){
 function Spectrum(){
 
   var spec = [];
-  var max_balls = 100;
+  var max_balls = 120;
 
   var spacing = w/max_balls;
 
@@ -73,7 +73,8 @@ function Spectrum(){
   this.draw = function(){
     for (var i = 0; i < spec.length; i++) {
       var b = spec[i];
-      b.block_size = 10 + Sound.mapSound(i, spec.length);
+      b.speed_y -= Sound.mapSound(i, spec.length)/2;
+      b.block_size = 10 + Sound.mapSound(i, spec.length)/3;
       this.drawSpectrum(b, i);
 
     }
@@ -81,15 +82,16 @@ function Spectrum(){
   }
 
   this.drawSpectrum = function(b, i){
-    ctx.fillStyle = hsl(map(i, 0, max_balls, 0, 360), 50, 50);
+    //ctx.fillStyle = hsl(map(i, 0, max_balls, 0, 360), 50, 50);
+    ctx.fillStyle = rgba(190, 0.5);
     ctx.fillRect(b.x, b.y-b.block_size, spacing-1, b.block_size);
   }
 
   function drawVols(){
     ctx.fillStyle = rgb(200);
-    var highs = 20 + Sound.getHighs();
-    var mids  = 20 + Sound.getMids();
-    var bass  = 20 + Sound.getBass();
+    var highs = 20 + Sound.getHighs()/2;
+    var mids  = 20 + Sound.getMids()/2;
+    var bass  = 20 + Sound.getBass()/2;
     ctx.fillRect(w-75, h - highs, 20, highs);
     ctx.fillRect(w-50, h - mids, 20, mids);
     ctx.fillRect(w-25, h - bass, 20, bass);
@@ -112,8 +114,6 @@ function Ball(_x, _y, _i){
   this.drawBall = function(){
     ctx.fillStyle = "#000";
     ctx.fillEllipse(this.x, this.y, this.block_size, this.block_size);
-    ctx.fillStyle = "#fff";
-    ctx.fillEllipse(this.x, this.y, this.block_size/2, this.block_size/2);
   }
 
   this.moveBall = function(){

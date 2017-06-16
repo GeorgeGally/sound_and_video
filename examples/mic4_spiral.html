@@ -3,11 +3,11 @@
 <title>Creative Coding Yea!</title>
 <head>
 <meta charset="utf-8">
-<script language="javascript" src="js/creative_coding.js"></script>
-<script language="javascript" src="js/canvas.js"></script>
-<script language="javascript" src="js/mic.js"></script>
-<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/mic.js"></script>
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
 
 
 </head>
@@ -18,8 +18,8 @@
 var ctx = createCanvas("canvas1");
 
 var num_items = 200;
-var radius = 80;
-ctx.lineWidth = 2;
+var radius = 100;
+ctx.lineWidth = 3;
 var particles = [];
 
 // working out the angles
@@ -42,12 +42,13 @@ function draw(){
   for (var i = 0; i < particles.length; i++) {
 
     var p = particles[i];
-    var s = Mic.mapSound(i, particles.length, 0, 100);
+    // multiply by 2 is a quick hack to get more visible spectrum
+    var s = Mic.mapSound(i, particles.length*2, 1, 150);
 
     // get a nice greyscale spectrum
-    ctx.strokeStyle = rgb(map(i, 0, particles.length, 0, 255));
+    //ctx.strokeStyle = rgb(map(i, 0, particles.length, 0, 255));
     // get a nice colour spectrum
-    //ctx.strokeStyle = hsl(map(i, 0, particles.length, 0, 360), 90, 50);
+    ctx.strokeStyle = hsl(map(i, 0, particles.length, 0, 360), 90, 50);
 
     x2 = w/2 + Math.cos(p.angle) * (s + radius);
 		y2 = h/2 + Math.sin(p.angle) * (s + radius);

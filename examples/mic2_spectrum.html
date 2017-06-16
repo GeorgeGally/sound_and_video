@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<title>Mic - seeing the spectrum</title>
+<head>
+<meta charset="utf-8">
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/mic.js"></script>
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+
+var number_of_bars = 150;
+var bar_width = w/number_of_bars;
+
+function draw() {
+  ctx.background(225);
+  for (var i = 0; i < number_of_bars; i++) {
+    // mapSound(position, total, min, max)
+    var s = Mic.mapSound(i, number_of_bars, 4, 150);
+    ctx.fillStyle = hsl(map(i, 0, number_of_bars, 0, 360), 60, 50);
+    ctx.fillRect(i*bar_width, h - s, bar_width-1, s);
+  }
+
+}
+
+
+
+
+</script>
+
+</body>
+
+</html>

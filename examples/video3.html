@@ -3,13 +3,13 @@
 <title>Creative Coding Yea!</title>
 <head>
     <meta charset="utf-8">
-<script language="javascript" src="js/creative_coding.js"></script>
-<script language="javascript" src="js/canvas.js"></script>
-<script language="javascript" src="js/quicksettings.min.js"></script>
-<script language="javascript" src="js/video.js"></script>
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/quicksettings.min.js"></script>
+<script language="javascript" src="../js/video.js"></script>
 
-<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
 
 
 </head>
@@ -106,6 +106,17 @@ function Ball(_x, _y, _i){
 }
 
 
+function getColour(x, y) {
+
+      var pos = (x + y * w);
+      var b = (sourceBuffer32[pos] >> 16) & 0xff;
+      var g = (sourceBuffer32[pos] >> 8) & 0xff;
+      var r = (sourceBuffer32[pos] >> 0) & 0xff;
+
+      return {red: r, green: g, blue: b};
+
+}
+
 //// QuickSettings
 
 var settings = QuickSettings.create(w-200, 0, "Settings");
@@ -118,7 +129,7 @@ settings.bindRange("maxballs", 100, 50000, 1500, 10, options);
 
 </script>
 
-<script language="javascript" src="js/motion_detection.js"></script>
+<script language="javascript" src="../js/motion_detection.js"></script>
 
 </body>
 

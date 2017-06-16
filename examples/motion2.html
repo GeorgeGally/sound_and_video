@@ -4,15 +4,15 @@
 <head>
 <meta charset="utf-8">
 
-<script language="javascript" src="js/creative_coding.js"></script>
-<script language="javascript" src="js/canvas.js"></script>
-<script language="javascript" src="js/video.js"></script>
-<script language="javascript" src="js/vector.js"></script>
-<script language="javascript" src="js/vector_particles.js"></script>
-<script language="javascript" src="js/quicksettings.min.js"></script>
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/video.js"></script>
+<script language="javascript" src="../js/vector.js"></script>
+<script language="javascript" src="../js/vector_particles.js"></script>
+<script language="javascript" src="../js/quicksettings.min.js"></script>
 
-<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
 
 </head>
 <body>
@@ -57,7 +57,6 @@ function draw(){
 function drawParticles(){
 
 	for (var i = 0; i < engine.particles.length; i++) {
-
 		p = engine.particles[i];
 		ctx.fillStyle = p.c;
 		ctx.fillEllipse(p.pos.x, p.pos.y, p.sz, p.sz);
@@ -95,7 +94,7 @@ function updateSliders(){
 
 
 </script>
-<script language="javascript" src="js/motion.js"></script>
+<script language="javascript" src="../js/motion.js"></script>
 </body>
 
 </html>

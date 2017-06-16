@@ -1,4 +1,4 @@
-var Sound;
+
 
 var soundCloud = function(_fft_size) {
 
@@ -11,15 +11,17 @@ var soundCloud = function(_fft_size) {
 
   var mix = [];
   var volume = [];
-  var audioCtx;
+  var audioContext;
   this.analyser;
   this.source;
   this.volumeLow = 0;
   this.volumeHi = 0;
   this.streamData;
   this.sound = {};
+  this.peak_volume = 0;
   // this.fft_size = fft_size || 256;
-  this.fft_size = _fft_size || 256;
+  var FFT_SIZE = _fft_size || 256;
+  var SAMPLE_RATE;
   var self = this;
   var player;
 
@@ -32,7 +34,7 @@ var soundCloud = function(_fft_size) {
     player = createAudioElement('player', self.fft_size);
   }
 
-  function createAudioElement(audio_name, _fft_size){
+  function createAudioElement(audio_name){
 
     var audioElement = document.createElement('audio');
     audioElement.setAttribute("id", audio_name);
@@ -40,28 +42,29 @@ var soundCloud = function(_fft_size) {
     audioElement.width = window.innerWidth;
     audioElement.height = window.innerHeight;
 
-    setupPlayer(audioElement, _fft_size);
+    setupPlayer(audioElement);
     createPlayerUI(audioElement);
     return audioElement;
 
   }
 
-  function setupPlayer(audioElement, _fft_size){
+  function setupPlayer(audioElement){
 
-    var audioCtxCheck = window.AudioContext || window.webkitAudioContext;
+    var audioContextCheck = window.AudioContext || window.webkitAudioContext;
 
-    if (!audioCtxCheck) {
+    if (!audioContextCheck) {
       alert("Audio context error");
     } else {
       var song_type = getGenre();
-      audioCtx = new (window.AudioContext || window.webkitAudioContext);
-      analyser = audioCtx.createAnalyser();
-      console.log("FFT Size:" + _fft_size);
-      analyser.fftSize = _fft_size;
+      audioContext = new (window.AudioContext || window.webkitAudioContext);
+      analyser = audioContext.createAnalyser();
+      SAMPLE_RATE = audioContext.sampleRate;
+      //console.log("FFT Size:" + FFT_SIZE);
+      analyser.fftSize = FFT_SIZE;
       analyser.smoothingTimeConstant = 0.3;
-      source = audioCtx.createMediaElementSource(audioElement);
+      source = audioContext.createMediaElementSource(audioElement);
       source.connect(analyser);
-      analyser.connect(audioCtx.destination);
+      analyser.connect(audioContext.destination);
 
       streamData = new Uint8Array(analyser.frequencyBinCount);
       audioLooper();
@@ -74,7 +77,9 @@ var soundCloud = function(_fft_size) {
     window.requestAnimationFrame(audioLooper);
     analyser.getByteFrequencyData(streamData);
     //console.log(streamData.length);
-    self.freqs = streamData.slice(0,streamData.length/2);
+    self.spectrum = streamData.slice(0,streamData.length/2);
+    self.vol = self.getVolume();
+    if (self.vol > self.peak_volume) self.peak_volume = self.vol;
   }
 
   function playStream(streamUrl) {
@@ -319,16 +324,17 @@ var soundCloud = function(_fft_size) {
 
   // SOUND UTILITIES
 
-  this.mapSound = function(_me, _total){
-        //console.log(self.freqs.length);
-        //var new_me = Math.floor(map(_me, 0, _total, 0, 256));
-        // HACK TO BECAUSE HIGHER VALUES NEVER HAVE DATA
-        var new_me = Math.floor(_me / _total * self.freqs.length);
-        return self.freqs[new_me];
-      }
+  this.mapSound = function(_me, _total, _min, _max){
 
+    if (self.spectrum.length > 0) {
+      return this.mapSpectrum(self.spectrum, _me, _total, _min, _max)
+    } else {
+      return 0;
+    }
+
+  }
   this.getVolume = function () {
-    return this.getRMS(self.freqs);
+    return this.getRMS(self.spectrum);
   }
 
   this.getRMS = function (freq) {
@@ -338,50 +344,92 @@ var soundCloud = function(_fft_size) {
         }
         rms /= freq.length;
         rms = Math.sqrt(rms);
-        return rms;
+        return rms || 0;
   }
 
-  //highs: 0 - 1/3
-  //mids: 1/3 - 2/3
-  //bass: 2/3 - 1
-
-  this.highsFFT = function(){
-        var start = 0;
-        var end = Math.round(self.freqs.length/3);
-        var highs = self.freqs.slice(start, end);
-        return highs;
+  //freq = n * SAMPLE_RATE / MY_FFT_SIZE
+  function mapFreq(i){
+    // var freq = i * SAMPLE_RATE / FFT_SIZE;
+    var freq = i * SAMPLE_RATE / self.spectrum.length;
+    return freq;
   }
 
-  this.midsFFT = function(){
-        var start =  Math.round(self.freqs.length/3);
-        var end = Math.round(self.freqs.length * 2/3);
-        var mids = self.freqs.slice(start, end);
-        return mids;
-  }
+    // getMix function. Computes the current frequency with
+    // computeFreqFromFFT, then returns bass, mids and his
+    // sub bass : 0 > 100hz
+    // mid bass : 80 > 500hz
+    // mid range: 400 > 2000hz
+    // upper mid: 1000 > 6000hz
+    // high freq: 4000 > 12000hz
+    // Very high freq: 10000 > 20000hz and above
 
-  this.bassFFT = function(){
-        var start =  Math.round(self.freqs.length * 2/3);
-        var end = self.freqs.length;
-        var bass = self.freqs.slice(start, end);
-        return bass;
-  }
+    this.getMix = function(){
+      var highs = [];
+      var mids = [];
+      var bass = [];
+      var bass = [];
+      for (var i = 0; i < self.spectrum.length; i++) {
+        var band = mapFreq(i);
+        var v = map(self.spectrum[i], 0, self.peak_volume, 0, 100);
+        if (band < 500) {
+          bass.push(v);
+        }
+        if (band > 400 && band < 6000) {
+            mids.push(v);
+        }
+        if (band > 4000) {
+            highs.push(v);
+        }
+      }
+      return {bass: bass, mids: mids, highs: highs}
+    }
 
 
-  this.getBass = function(){
-        var bass =  this.bassFFT();
-        return this.getRMS(bass);
+    this.getBass = function(){
+            return this.getMix().bass;
       }
 
-  this.getMids = function(){
-        var mids =  this.midsFFT();
-        return this.getRMS(mids);
-  }
+    this.getMids = function(){
+          return this.getMix().mids;
+    }
 
-  this.getHighs = function(){
-        var highs =  this.highsFFT();
-        return this.getRMS(highs);
-  }
+    this.getHighs = function(){
+          return this.getMix().highs;
+    }
 
+    this.getHighsVol = function(_min, _max){
+      var min = _min || 0;
+      var max = _max || 100;
+      var v = map(this.getRMS(this.getMix().highs), 0, self.peak_volume, min, max);
+      return v || 0;
+    }
+
+    this.getMidsVol = function(_min, _max){
+      var min = _min || 0;
+      var max = _max || 100;
+      var v = map(this.getRMS(this.getMix().mids), 0, self.peak_volume, min, max);
+      return v || 0;
+    }
+
+    this.getBassVol = function(_min, _max){
+      var min = _min || 0;
+      var max = _max || 100;
+      var v = map(this.getRMS(this.getMix().bass), 0, self.peak_volume, min, max);
+      return v || 0;
+    }
+
+  this.mapSpectrum = function(_freqs, _me, _total, _min, _max){
+    var min = _min || 0;
+      var max = _max || 100;
+      //actual new freq
+      var new_freq = Math.round(_me /_total * _freqs.length);
+
+      //console.log(Math.round(self.peak_volume) + " : " + Math.round(self.spectrum[new_freq]));
+      // map the volumes to a useful number
+      var s = map(_freqs[new_freq], 0, self.peak_volume, min, max);
+      //console.log(s);
+      return s || 0;
+  }
 
   // On load, check to see if there is a track name/genre in the URL
 
@@ -421,3 +469,5 @@ function loadScript(url, callback)
     // Fire the loading
     head.appendChild(script);
 }
+
+var Sound = new soundCloud();

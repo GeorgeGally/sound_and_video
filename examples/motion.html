@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
-<title>Creative Coding Yea!</title>
+<title>Motion Detection</title>
 <head>
     <meta charset="utf-8">
-<script language="javascript" src="js/creative_coding.js"></script>
-<script language="javascript" src="js/canvas.js"></script>
-<script language="javascript" src="js/quicksettings.min.js"></script>
-<script language="javascript" src="js/video.js"></script>
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/quicksettings.min.js"></script>
+<script language="javascript" src="../js/video.js"></script>
 
 
-<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
 
 
 </head>
@@ -30,11 +30,10 @@ var options = {
 
 function draw(){
 
-  ctx.background(250, 0.06);
+  ctx.background(250, 0.1);
 
   var motion = motionDetection(blocksize);
 
-  if(camera_started) {
 
     for (var i = 0; i < motion.length; i++) {
 
@@ -44,16 +43,10 @@ function draw(){
 
     }
 
-  }
 
 
   blocksize = options.blocksize;
   sensitivity = 100 - options.sensitivity;
-
-  if (motion_array.length > 0 && !camera_started) {
-    camera_started = true;
-  }
-
 
 } // end draw
 
@@ -70,7 +63,7 @@ settings.bindRange("sensitivity", 1, 100, 60, 1, options);
 
 
 </script>
-<script language="javascript" src="js/motion_detection.js"></script>
+<script language="javascript" src="../js/motion_detection.js"></script>
 
 </body>
 

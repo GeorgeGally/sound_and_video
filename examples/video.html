@@ -3,13 +3,13 @@
 <title>Creative Coding Yea!</title>
 <head>
     <meta charset="utf-8">
-<script language="javascript" src="js/creative_coding.js"></script>
-<script language="javascript" src="js/canvas.js"></script>
-<script language="javascript" src="js/video.js"></script>
-<script language="javascript" src="js/quicksettings.min.js"></script>
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/video.js"></script>
+<script language="javascript" src="../js/quicksettings.min.js"></script>
 
-<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
 
 
 </head>
@@ -37,12 +37,14 @@ function draw(){
 
       // TRY CHANGE THESE COLOURS
       //ctx.fillStyle = rgb(colour.red, 0, 0);
-      //ctx.fillStyle = rgb(colour.red);
-      ctx.fillStyle = rgb(colour.red, colour.green, colour.blue);
+      ctx.fillStyle = rgb(colour.red);
+      //ctx.fillStyle = rgb(colour.red, colour.green, colour.blue);
 
       // TRY CHANGE THESE SHAPES
-      ctx.fillRect(x, y, resolution, resolution);
-      //ctx.fillEllipse(x, y, resolution, resolution);
+      //ctx.fillRect(x, y, resolution, resolution);
+      ctx.fillEllipse(x, y, resolution, resolution);
+      ctx.fillStyle = "white";
+      ctx.fillEllipse(x, y, resolution/2, resolution/2);
       //ctx.fillPolygon(x, y, 4, resolution);
 
     }

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<title>Sound &amp; Motion - George Gally - Radarboy</title>
+<head>
+<meta charset="utf-8">
+
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/mic.js"></script>
+<script language="javascript" src="../js/vector.js"></script>
+<script language="javascript" src="../js/particle_engine.js"></script>
+<script language="javascript" src="../js/quicksettings.min.js"></script>
+
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var engine = new particleEngine(0,0);
+engine.bounce = true;
+
+engine.max_particles = 500;
+
+function draw(){
+
+  ctx.background(255, 0.1);
+
+  // we can set a max mapped range to getVolume(range)
+  var vol = Mic.getVolume(50);
+  //console.log(vol);
+
+  if (vol > sensitivity) {
+    addParticle(vol);
+  }
+  engine.draw();
+  updateSliders();
+
+}
+
+
+function addParticle(vol){
+  //console.log("addParticle");
+  // TRY CHANGING THE START POSITION X
+  //var start_position_x = random(w);
+  var start_position_x = w/2;
+
+  // TRY CHANGING THE START POSITION Y
+  //var start_position_y = random(h);
+  var start_position_y = h/2;
+
+  // TRY CHANGING THE COLOURS
+  // var colour = rgb(random(255), 0, 0);
+  //var colour = rgb(random(255), 0, random(255));
+  var colour = rgb(random(0, 200));
+  //var colour = rgb(0, random(55), random(255));
+  engine.add(start_position_x, start_position_y, colour);
+
+  // engine.last let's us target the newest particle
+  engine.last.target_sz = vol/2;
+  engine.last.sz = vol/5;
+  engine.last.speed = new Vector(random(-5,5),random(-5,5));
+
+}
+
+
+
+// we could
+
+function drawParticles(){
+
+	for (var i = 0; i < engine.particles.length; i++) {
+		p = engine.particles[i];
+		ctx.fillStyle = p.c;
+		ctx.fillEllipse(p.pos.x, p.pos.y, p.sz, p.sz);
+	}
+
+}
+
+
+// DON'T REALLY NEED TO CHANGE ANYTHING BELOW HERE
+
+
+var options = {
+  resolution: 20,
+  sensitivity: 20,
+  start_size: 15,
+  speed_max_x: 1,
+  speed_max_y: 2,
+  max_particles: 1000,
+  life: 0.98,
+  randomize_x: 0,
+  randomize_y: 0
+}
+
+
+//// QuickSettings
+
+var settings = QuickSettings.create(w-200, 0, "Settings");
+
+settings.bindRange("max_particles", 10, 10000, 1500, 1, options);
+settings.addRange("sensitivity", 0, 50, 20, 1);
+
+function updateSliders(){
+  sensitivity = settings.getValue('sensitivity');
+  engine.max_particles = settings.getValue('max_particles');
+
+}
+
+
+</script>
+</body>
+
+</html>

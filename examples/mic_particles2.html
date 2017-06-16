@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<title>Sound &amp; Motion - George Gally - Radarboy</title>
+<head>
+<meta charset="utf-8">
+
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/mic.js"></script>
+<script language="javascript" src="../js/vector.js"></script>
+<script language="javascript" src="../js/particle_engine.js"></script>
+
+
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var engine = new particleEngine();
+console.log(engine);
+engine.bounce = false;
+engine.border = false;
+engine.max_particles = 500;
+
+function draw(){
+
+  ctx.background(255, 0.1);
+  var s = Mic.getVolume();
+  if (s> 20) {
+    addParticle();
+  }
+  engine.update();
+  drawParticles();
+}
+
+
+function addParticle(s){
+  var x = map(s, 0, 100, 0, w);
+  engine.add(random(w), 1);
+  engine.last.speed.x = 0;
+  engine.last.speed.y = random(1,6);
+  engine.last.sz = random(1,6);
+}
+
+
+function drawParticles(){
+
+	for (var i = 0; i < engine.particles.length; i++) {
+		p = engine.particles[i];
+		ctx.fillStyle = "black";
+		ctx.fillEllipse(p.pos.x, p.pos.y, p.sz, p.sz);
+	}
+
+}
+
+
+
+</script>
+</body>
+
+</html>

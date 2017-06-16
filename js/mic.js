@@ -4,11 +4,11 @@ function Microphone (_fft) {
 
     var FFT_SIZE = _fft || 1024;
 
-    this.spectrum = [];
-    this.volume = this.vol = 0;
-    this.peak_volume = 0;
-
     var self = this;
+    self.spectrum = new Uint8Array(FFT_SIZE/2);
+    self.volume = self.vol = 0;
+    self.peak_volume = 0;
+
     var audioContext = new AudioContext();
     var SAMPLE_RATE = audioContext.sampleRate;
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -77,7 +77,7 @@ function Microphone (_fft) {
         var min = _min || 0;
         var max = _max || 100;
         //actual new freq
-        var new_freq = Math.round(_me /_total * self.spectrum.length);
+        var new_freq = Math.round(_me /_total * self.spectrum.length/2);
 
         //console.log(Math.round(self.peak_volume) + " : " + Math.round(self.spectrum[new_freq]));
         // map the volumes to a useful number
@@ -93,14 +93,14 @@ function Microphone (_fft) {
 
     this.getVol = function(_max){
 
-      var max = _max || 0;
+      var max = _max || 100;
 
       // map total volume to 100 for convenience
-      self.volume = map(self.vol, 0, self.peak_volume, 0, 100);
+      self.volume = map(self.vol, 0, self.peak_volume, 0, max);
       return self.volume;
     }
 
-    this.getVolume = function() { return this.getVol();}
+    this.getVolume = function(_max) { return this.getVol(_max);}
 
     //A more accurate way to get overall volume
     this.getRMS = function (spectrum) {
@@ -114,24 +114,26 @@ function Microphone (_fft) {
           return rms;
     }
 
-//freq = n * SAMPLE_RATE / MY_FFT_SIZE
-function mapFreq(i){
-  var freq = i * SAMPLE_RATE / FFT_SIZE;
-  return freq;
-}
+    //freq = n * SAMPLE_RATE / MY_FFT_SIZE
+    function mapFreq(i){
+      // var freq = i * SAMPLE_RATE / FFT_SIZE;
+      var freq = i * SAMPLE_RATE / self.spectrum.length;
+      return freq;
+    }
 
-// getMix function. Computes the current frequency with
-// computeFreqFromFFT, then returns bass, mids and his
-// sub bass : 0 > 100hz
-// mid bass : 80 > 500hz
-// mid range: 400 > 2000hz
-// upper mid: 1000 > 6000hz
-// high freq: 4000 > 12000hz
-// Very high freq: 10000 > 20000hz and above
+  // getMix function. Computes the current frequency with
+  // computeFreqFromFFT, then returns bass, mids and his
+  // sub bass : 0 > 100hz
+  // mid bass : 80 > 500hz
+  // mid range: 400 > 2000hz
+  // upper mid: 1000 > 6000hz
+  // high freq: 4000 > 12000hz
+  // Very high freq: 10000 > 20000hz and above
 
   this.getMix = function(){
     var highs = [];
     var mids = [];
+    var bass = [];
     var bass = [];
     for (var i = 0; i < self.spectrum.length; i++) {
       var band = mapFreq(i);
@@ -146,7 +148,6 @@ function mapFreq(i){
           highs.push(v);
       }
     }
-    //console.log(bass);
     return {bass: bass, mids: mids, highs: highs}
   }
 
@@ -191,3 +192,4 @@ function mapFreq(i){
 
 
 var Mic = new Microphone();
+console.log(Mic);

@@ -1,4 +1,6 @@
-# creative_coding_workshop
+# sound and video reactive workshop
+
+
 
 # create a drawing space
 ~ denotes you can leave these out
