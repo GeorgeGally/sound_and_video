@@ -23,7 +23,7 @@ var ctx = createCanvas("canvas1");
 var engine = new particleEngine(2000, 1);
 particles = engine.particles;
 
-var radius = 60;
+var radius = 40;
 var c = 0;
 ctx.strokeStyle = rgb(255);
 ctx.lineWidth = 0.5;
@@ -48,8 +48,8 @@ for (var i = 0; i < particles.length; i++) {
   function drawParticles(){
   	for (var i = 0; i < particles.length; i++) {
   		p = particles[i];
-      ctx.fillStyle = p.c;
-      ctx.LfillEllipse(p.pos.x, p.pos.y, 5, 5);
+      ctx.strokeStyle = p.c;
+      ctx.line(w/2, h/2, p.pos.x, p.pos.y);
     }
   }
 
@@ -57,7 +57,7 @@ for (var i = 0; i < particles.length; i++) {
   	for (var i = 0; i < particles.length; i++) {
   		p = particles[i];
   		var s =  radius + Mic.mapSound(i, particles.length,
-  			0, 120);
+  			0, 100);
   		p.pos.x = w/2 + Math.cos(p.angle) * (radius + s);
   		p.pos.y = h/2 + Math.sin(p.angle) * (radius + s);
 

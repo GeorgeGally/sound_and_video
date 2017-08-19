@@ -37,7 +37,7 @@ for (var i = 0; i < num_items; i++) {
 
 function draw(){
 
-  ctx.background(245);
+  ctx.background(0);
 
   for (var i = 0; i < particles.length; i++) {
 
@@ -47,6 +47,7 @@ function draw(){
 
     // get a nice greyscale spectrum
     //ctx.strokeStyle = rgb(map(i, 0, particles.length, 0, 255));
+
     // get a nice colour spectrum
     ctx.strokeStyle = hsl(map(i, 0, particles.length, 0, 360), 90, 50);
 

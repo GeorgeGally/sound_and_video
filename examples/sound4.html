@@ -3,7 +3,7 @@
 <title>Creative Coding Yea!</title>
 <head>
 <meta charset="utf-8">
-<script language="javascript" src="../js/soundcloud.js"></script>
+
 <script language="javascript" src="../js/creative_coding.js"></script>
 <script language="javascript" src="../js/canvas.js"></script>
 
@@ -20,9 +20,12 @@
 
 
 var ctx = createCanvas("canvas1");
-var Sound = new soundCloud(256);
+
 ctx.lineWidth = 2;
 
+function setup(){
+  console.log(Sound);
+}
 
 var balls = [];
 var max_balls = 10;
@@ -42,9 +45,9 @@ function draw(){
 
   ctx.background(250, 0.1);
 
-  for (var i = 0; i < Sound.freqs.length; i++) {
-    if (Sound.freqs[i] > 10) {
-      addBall(map(Sound.freqs[i], 0, 200, 0, w), h/2);
+  for (var i = 0; i < Sound.spectrum.length/2; i++) {
+    if (Sound.spectrum[i] > 10) {
+      addBall(map(Sound.spectrum[i], 0, 200, 0, w), h/2);
     }
   }
 
@@ -69,24 +72,24 @@ function Ball(_x, _y, _i){
   this.start_y = _y;
 
   this.me = _i;
-  this.block_size = 10;
-  this.speed_x = random(-5, 5);
+  this.sz = 10;
+  this.speed_x = random(-1, 1);
   this.speed_y = random(-5, 5);
   this.c = rgb(random(255), 0, 0);
 
 
   this.drawBall = function(){
     ctx.fillStyle = this.c;
-    ctx.fillEllipse(this.x, this.y, this.block_size, this.block_size);
+    ctx.fillEllipse(this.x, this.y, this.sz, this.sz);
 
   }
   this.moveBall = function(){
     this.x += this.speed_x;
     this.y += this.speed_y;
     //this.speed_y += 0.4;
-    this.block_size -= 0.1;
+    this.sz -= 0.3;
 
-    if (this.x > width || this.x < 0  || this.y > height || this.y < 0 || this.block_size < 1 ) {
+    if (this.x > width || this.x < 0  || this.y > height || this.y < 0 || this.sz < 1 ) {
       balls.splice(0, 1);
     }
   }
@@ -97,7 +100,7 @@ function Ball(_x, _y, _i){
 
 
 </script>
-
+<script language="javascript" src="../js/soundcloud.js"></script>
 </body>
 
 </html>

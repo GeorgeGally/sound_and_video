@@ -16,34 +16,33 @@
 <script>
 
 var ctx = createCanvas("canvas1");
-var max_vol = 100;
+var max_vol = 160;
 
 function draw(){
-  ctx.background(255, 0.1);
-
-
-  var bass = Mic.getBassVol(10, max_vol);
-  //console.log(bass);
-  speaker(w/4, bass);
-
-
-  var mids = Mic.getMidsVol(10, max_vol);
-  speaker(w/2, mids);
+  ctx.background(0, 0.8);
 
   var highs = Mic.getHighsVol(10, max_vol);
-  speaker(w - w/4, highs);
+  speaker(h/4, highs);
+
+  var mids = Mic.getMidsVol(10, max_vol);
+  speaker(h/2, mids);
+
+  var bass = Mic.getBassVol(10, max_vol);
+  speaker(h - h/4, bass);
+
+
 
 }
 
 function speaker(pos, sz){
+  ctx.fillStyle = rgb(50);
+  ctx.HfillEllipse(w/2, pos, max_vol, max_vol);
+  ctx.strokeStyle = rgba(255, 0.8);
+  ctx.HstrokeEllipse(w/2, pos, max_vol-5, max_vol-5);
+  ctx.fillStyle = rgba(sz, 0.8);
+  ctx.fillEllipse(w/2, pos, sz, sz);
   ctx.fillStyle = rgb(0);
-  ctx.HfillEllipse(pos, h/2, max_vol, max_vol);
-  ctx.strokeStyle = rgba(255, 0.5);
-  ctx.HstrokeEllipse(pos, h/2, max_vol-5, max_vol-5);
-  ctx.fillStyle = rgba(sz, 0.7);
-  ctx.fillEllipse(pos, h/2, sz, sz);
-  ctx.fillStyle = rgb(0);
-  ctx.fillEllipse(pos, h/2, 20, 20);
+  ctx.fillEllipse(w/2, pos, 20, 20);
 }
 
 

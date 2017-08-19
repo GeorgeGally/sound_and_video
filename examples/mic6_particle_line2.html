@@ -21,7 +21,8 @@
 
 var ctx = createCanvas("canvas1");
 var engine = new particleEngine(0,0);
-engine.eqDownFillTriangle = true;
+var wave = new particleEngine(40,1);
+engine.edge = false;
 
 engine.max_particles = 500;
 
@@ -29,63 +30,68 @@ var sensitivity = 40;
 
 function draw(){
 
-  ctx.background(255, 0.1);
+  ctx.background(245);
 
-  // we can set a max mapped range to getVolume(range)
-  var vol = Mic.getVolume(50);
-  //console.log(vol);
-
-  if (vol > sensitivity) {
-    addParticle(vol);
-  }
   engine.draw();
+  updateWave();
+  //drawWave();
+
   updateSliders();
 
 }
 
 
-function addParticle(vol){
-  //console.log("addParticle");
-  // TRY CHANGING THE START POSITION X
-  var start_position_x = random(w);
-  //var start_position_x = w/2;
+function addParticle(vol, x, y){
 
-  // TRY CHANGING THE START POSITION Y
-  //var start_position_y = random(h);
-  var start_position_y = h/2;
+  var start_position_x = x;
+  var start_position_y = y;
 
   // TRY CHANGING THE COLOURS
   // var colour = rgb(random(255), 0, 0);
   //var colour = rgb(random(255), 0, random(255));
-  var colour = rgb(random(0, 200));
+  var colour = rgb(0);
   //var colour = rgb(0, random(55), random(255));
   engine.add(start_position_x, start_position_y, colour);
 
   // engine.last let's us target the newest particle
-  engine.last.target_sz = vol/5;
-  engine.last.sz = vol/2;
-  engine.last.speed = new Vector(0,random(-5,5));
+  engine.last.target_sz = 2;
+  engine.last.sz = vol/4;
+  engine.last.speed = new Vector(random(-2, 2),-vol/10);
+
+}
+
+
+function updateWave(){
+
+  for (var i = 0; i < wave.particles.length; i++) {
+		p = wave.particles[i];
+    var vol = Mic.mapSound(i, wave.particles.length, 0, 50);
+		p.pos.y = p.start.y + vol  - 25;
+
+    if (vol > sensitivity ) {
+      addParticle(vol, p.pos.x, p.pos.y);
+    }
+
+	}
+
 
 }
 
 
 
-// we could
+function drawWave(){
 
-function drawParticles(){
-
-	for (var i = 0; i < engine.particles.length; i++) {
-		p = engine.particles[i];
-		ctx.fillStyle = p.c;
+  for (var i = 0; i < wave.particles.length; i++) {
+		p = wave.particles[i];
+		ctx.fillStyle = "black";
 		ctx.fillEllipse(p.pos.x, p.pos.y, p.sz, p.sz);
 	}
+
 
 }
 
 
 // DON'T REALLY NEED TO CHANGE ANYTHING BELOW HERE
-
-
 var options = {
   sensitivity: sensitivity,
   max_particles: 1000,
@@ -97,13 +103,14 @@ var options = {
 var settings = QuickSettings.create(w-200, 0, "Settings");
 
 settings.bindRange("max_particles", 10, 10000, 1500, 1, options);
-settings.addRange("sensitivity", 0, 50, sensitivity, 1);
+settings.addRange("sensitivity", 0, 100, sensitivity, 1);
 
 function updateSliders(){
   sensitivity = settings.getValue('sensitivity');
   engine.max_particles = settings.getValue('max_particles');
 
 }
+
 
 
 </script>

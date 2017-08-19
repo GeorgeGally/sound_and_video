@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+<meta charset="utf-8">
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/mic.js"></script>
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+ctx.lineWidth = 1;
+
+// create particles
+var particles = [];
+var number_of_particles = 100;
+
+// for (var i = 0; i < number_of_particles; i++) {
+//   addParticle(i);
+// }
+
+function addParticle(){
+  var particle = {
+    x: w/2,
+    y: h/2,
+      speed_x: posNeg() * random(1, 4),
+    speed_y: posNeg() * random(1, 4),
+    sz: random(4,18),
+    me: particles.length-1
+  }
+  particles.push(particle);
+}
+
+
+function draw(){
+  ctx.background(0);
+  var s = Mic.getVol();
+
+  if(s > 60) addParticle(particles.length);
+
+  for (var i = particles.length-1; i > 0 ; i--) {
+    var p = particles[i];
+
+    drawParticle(p);
+    moveParticle(p, i);
+  }
+
+}
+
+
+function moveParticle(p, i){
+
+    var s = Mic.mapSound(p.me, particles.length, 1, 20);
+    //if(s > 0) p.sz = tween(p.sz, s, 4);
+
+    //console.log(b.sz);
+    p.x += p.speed_x;
+    p.y += p.speed_y;
+    if (p.x > w || p.x < 0) particles.splice(i, 1);
+    if (p.y > h || p.y < 0) particles.splice(i, 1);
+}
+
+
+function drawParticle(p){
+    ctx.fillStyle = "white";
+    ctx.fillEllipse(p.x, p.y, p.sz, p.sz);
+}
+
+
+
+</script>
+
+</body>
+
+</html>

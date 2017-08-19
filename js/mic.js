@@ -1,13 +1,13 @@
 
 
-function Microphone (_fft) {
+function Mic (_fft) {
 
     var FFT_SIZE = _fft || 1024;
 
     var self = this;
     self.spectrum = new Uint8Array(FFT_SIZE/2);
     self.volume = self.vol = 0;
-    self.peak_volume = 0;
+    self.peak_volume = 20;
 
     var audioContext = new AudioContext();
     var SAMPLE_RATE = audioContext.sampleRate;
@@ -209,5 +209,5 @@ function Microphone (_fft) {
 
 
 
-var Mic = new Microphone();
+var Mic = new Mic();
 console.log(Mic);

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+
+<meta charset="utf-8">
+
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/audio.css" type="text/css" media="screen" />
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var num_boxes = 300;
+var box_size = w/num_boxes;
+var radius = 100;
+var global_angle = 0;
+
+
+
+
+var my_pos = {
+  x: 999,
+  y: 400
+};
+
+
+var my_pos2 = {
+  x: 999,
+  y: 400
+};
+
+var my_pos3 = {
+  x: 0,
+  y: 0
+};
+
+
+function draw(){
+
+  ctx.background(0, 0.2);
+  global_angle = global_angle + 0.05;
+  
+  for (var i = 0; i < num_boxes; i=i+1) {
+
+    var vol = Sound.mapSound(i, num_boxes, 1, 150);
+    var my_angle = radians(distributeAngles(i, num_boxes));
+
+    my_pos = getPosition(global_angle + my_angle, radius);
+    my_pos2 = getPosition(global_angle + my_angle, radius + vol);
+
+    ctx.fillStyle = hsl(i, 80, 60);
+    ctx.strokeStyle = hsl(i, 80, 60);
+
+    ctx.line(my_pos.x, my_pos.y, my_pos2.x, my_pos2.y);
+    //ctx.line(my_pos2.x, my_pos2.y,my_pos3.x, my_pos3.y);
+    ctx.fillEllipse(my_pos2.x, my_pos2.y, vol, vol);
+  }
+
+}
+
+
+function getPosition(angle, radius){
+  var pos_x = w/2 + Math.cos(angle) * radius;
+  var pos_y = h/2 + Math.sin(angle) * radius;
+  return {x: pos_x, y: pos_y};
+}
+
+
+////////////yo
+
+
+
+</script>
+
+<script language="javascript" src="js/soundcloud.js"></script>
+</body>
+
+</html>

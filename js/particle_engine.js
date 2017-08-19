@@ -1,7 +1,7 @@
 var particleEngine = function(_gw, _gh, _grid_w, _grid_h, _startx, _starty){
 
-	var gw = _gw || 1;
-	var gh = _gh || 1;
+	var gw = _gw || 0;
+	var gh = _gh || 0;
 	this.start = {x: _startx || 0 , y: _starty || 0};
 	this.width = _grid_w || w;
   this.height = _grid_h || h;
@@ -36,6 +36,15 @@ var particleEngine = function(_gw, _gh, _grid_w, _grid_h, _startx, _starty){
 	this.draw = function() {
 		this.update();
 		this.drawParticles();
+	}
+
+
+	this.randomize = function() {
+		for (var i = 0; i < this.particles.length; i++) {
+		  var p = this.particles[i];
+		  p.pos.x = random(w);
+		  p.pos.y = random(h);
+		}
 	}
 
 
@@ -95,14 +104,27 @@ var particleEngine = function(_gw, _gh, _grid_w, _grid_h, _startx, _starty){
 		this.last = particle;
 		this.length = this.particles.length;
 		this.spacing = 360/this.particles.length;
-
+		this.resetAngles();
 		return particle;
+}
+
+this.resetAngles = function() {
+	for (var i = 0; i < this.particles.length; i++) {
+		var p = this.particles[i];
+		p.angle = radians(distributeAngles(i, this.particles.length));
+	}
 }
 
 this.delete = function(_me){
 	if (_me === undefined) {
 		_me = 0;
 	}
+	// var pos = this.particles.indexOf(p)
+	// if (p === undefined) {
+	// 	pos = 0;
+	// }
+	//console.log(pos);
+	//this.particles.splice(pos, 1);
 	//console.log(_me);
 	this.particles.splice(_me, 1);
 	this.length = this.particles.length;
@@ -119,6 +141,7 @@ this.drawParticles = function(){
 	for (var i = 0; i < this.length; i++) {
 
 		p = this.particles[i];
+		ctx.fillStyle = p.c;
 		ctx.fillEllipse(p.pos.x, p.pos.y, p.sz, p.sz);
 
 	}
@@ -136,7 +159,14 @@ this.update = function(){
 			updateSpring(p)
 		}	else {
 			this.move(p);
-			if(this.border) this.offCanvasTest(p);
+			if(this.edge) {
+									this.offCanvasTest(p);
+			} else if(this.border) {
+				if (p.pos.x > w || p.pos.y > h || p.pos.x < 0 || p.pos.y < 0){
+					this.delete(p.me);
+				}
+
+			}
 		};
 	}
 }
@@ -164,15 +194,17 @@ this.move = function(p){
 
 
 this.offCanvasTest = function(p){
-	if (this.bounce) {
-				if (bounce(p.x, 0, w)) p.speed.x *=-1;
-				if (bounce(p.y, 0, h)) p.speed.y *=-1;
-	} else {
-				if (p.pos.x > w) p.pos.x = p.target.x = 0;
-				if (p.pos.y > h) p.pos.y = p.target.y = 0;
-				if (p.pos.x < 0) p.pos.x = p.target.x = w;
-				if (p.pos.y < 0) p.pos.y = p.target.y =h;
-	}
+
+		if (this.bounce) {
+			if (bounce(p.x, 0, w)) p.speed.x *=-1;
+			if (bounce(p.y, 0, h)) p.speed.y *=-1;
+		} else {
+			if (p.pos.x > w) p.pos.x = p.target.x = 0;
+			if (p.pos.y > h) p.pos.y = p.target.y = 0;
+			if (p.pos.x < 0) p.pos.x = p.target.x = w;
+			if (p.pos.y < 0) p.pos.y = p.target.y =h;
+		}
+
 }
 
 

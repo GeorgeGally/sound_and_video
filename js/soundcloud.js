@@ -471,3 +471,4 @@ function loadScript(url, callback)
 }
 
 var Sound = new soundCloud();
+console.log(Sound);

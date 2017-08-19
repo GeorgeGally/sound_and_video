@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+<meta charset="utf-8">
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/mic.js"></script>
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var gw = 1;
+var gh = 30;
+var grid = new Grid(gw, gh);
+
+console.log(grid);
+
+
+function draw(){
+  ctx.background(235);
+  for (var i = 0; i < grid.length; i++) {
+    var s = map(Mic.spectrum[i], 0, 255, 4, 200);
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, i * grid.spacing.y, s, grid.spacing.y - 2);
+  }
+}
+
+
+function moveParticle(p){
+    var m = Math.round(Mic.spectrum.length/2);
+    if(m > 0) {
+      var s = map(Mic.spectrum[p.me%(m-1)], 0, 255, 4, grid.spacing.x - 2);
+      p.sz = tween(p.sz, s, 2);
+    }
+}
+
+
+function drawParticle(p){
+
+}
+
+
+</script>
+
+</body>
+
+</html>

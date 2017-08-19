@@ -7,6 +7,7 @@
 
 <script language="javascript" src="js/creative_coding.js"></script>
 <script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="js/mic.js"></script>
 
 <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
@@ -16,21 +17,23 @@
 
 <script>
 
-// this is a function (from canvas.js) that sets you the canvas
-// so you don't need to do any of the heavy lifting and can
-// start playing straight away
-// the function also lets you access the screen width as "width" or "w"
-// and the screen height as "height" or "h"
-
 var ctx = createCanvas("canvas1");
+var sz = 200;
 
-// much like processing this is the drawing loop that plays repeatedly
-// the actual syntax is a shortcut for requestAnimationFrame
 
 function draw(){
-  ctx.background(255,255,255);
+  //ctx.background(255,255,255);
+  var vol = Mic.getVolume(500);
+  ctx.fillStyle = rgba(vol, 0.3);
+  ctx.fillEllipse(w/2, h/2, vol, vol);
+}
 
-} // end draw
+
+
+
+
+
+////////////yo
 
 
 

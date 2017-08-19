@@ -6,7 +6,6 @@
 
 <script language="javascript" src="../js/creative_coding.js"></script>
 <script language="javascript" src="../js/canvas.js"></script>
-<script language="javascript" src="../js/soundcloud.js"></script>
 
 <link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
@@ -21,9 +20,10 @@
 
 var ctx = createCanvas("canvas1");
 ctx.lineWidth = 2;
-var Sound = new soundCloud(512);
 
-console.log(Sound);
+function setup() {
+  console.log(Sound);
+}
 var balls = [];
 var max_balls = 200;
 
@@ -89,7 +89,7 @@ function Ball(_x, _y){
 
 
 </script>
-
+<script language="javascript" src="../js/soundcloud.js"></script>
 
 
 </body>

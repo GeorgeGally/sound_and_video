@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+<meta charset="utf-8">
+
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/video.js"></script>
+
+
+<script language="javascript" src="../js/vector.js"></script>
+<script language="javascript" src="../js/vector_particles.js"></script>
+
+<script src="../js/clmtrackr.min.js"></script>
+<script src="../js/model_pca_20_svm.js"></script>
+
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+var ctx = createCanvas("canvas1");
+var ratio = 4;
+
+
+function setup(){
+
+  vid = document.getElementById('videoOutput');
+  video.width = w/ratio;
+  video.height = h/ratio;
+
+}
+
+
+function draw(){
+
+  ctx.background(0);
+  //ctx.drawImage(video, 0, 0, w, h);
+    ctx.save();
+    ctx.translate(w/2, h/2);
+    feedback(2);
+    feedback(2.2);
+    feedback(2.4);
+    feedback(2.6);
+    feedback(2.8);
+    feedback(3);
+    feedback(3.4);
+    feedback(3.8);
+    feedback(4);
+    feedback(5);
+    feedback(6);
+    feedback(7);
+    ctx.restore();
+}
+
+
+function feedback(sz){
+  ctx.rotateDegrees(Math.sin(frameCount/120)*100);
+    ctx.drawImage(video, -w/(sz*2), -h/(sz*2), w/sz, h/sz);
+}
+
+</script>
+
+</body>
+
+</html>

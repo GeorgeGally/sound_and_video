@@ -164,6 +164,32 @@ p.HfillEllipse = function(x, y, width, height) {
  this.beginPath();
 };
 
+p.LfillEllipse = function(x, y, width, height) {
+ if (height == undefined) height = width;
+ this.Lellipse(x,y,width, height);
+ this.fill();
+ this.beginPath();
+};
+
+p.Hellipse = function(x, y, width, height) {
+ if (height == undefined) { height = width; }
+ this.beginPath();
+ for(var i=0;i<Math.PI*2;i+=Math.PI/64) {
+ this.lineTo(x+(Math.cos(i)*width/2), y+(Math.sin(i)*height/2));
+ }
+ //this.closePath();
+};
+
+
+p.Lellipse = function(x, y, width, height) {
+ if (height == undefined) { height = width; }
+ this.beginPath();
+ for(var i=0;i<Math.PI*2;i+=Math.PI/8) {
+ this.lineTo(x+(Math.cos(i)*width/2), y+(Math.sin(i)*height/2));
+ }
+ //this.closePath();
+};
+
 p.strokeEllipse = function(x, y, width, height) {
  if (height == undefined) height = width;
  this.ellipse(x,y,width, height);
@@ -174,6 +200,13 @@ p.strokeEllipse = function(x, y, width, height) {
 p.HstrokeEllipse = function(x, y, width, height) {
  if (height == undefined) { height = width; }
  this.Hellipse(x,y,width, height);
+ this.stroke();
+ this.beginPath();
+};
+
+p.LstrokeEllipse = function(x, y, width, height) {
+ if (height == undefined) { height = width; }
+ this.Lellipse(x,y,width, height);
  this.stroke();
  this.beginPath();
 };

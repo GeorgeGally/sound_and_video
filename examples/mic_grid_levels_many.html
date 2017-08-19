@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+<meta charset="utf-8">
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="js/mic.js"></script>
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var gw = 30;
+var gh = 30;
+var grid = new Grid(gw, gh);
+ctx.lineWidth = 0.2;
+console.log(grid);
+
+// create particles
+var particles = [];
+var number_of_particles = gw * gh;
+for (var i = 0; i < number_of_particles; i++) {
+  addBall(grid.x[i], grid.y[i], i);
+}
+
+function addBall(x, y, i){
+  var ball = {
+    x: x,
+    y: y,
+    sz: 10,
+    me: i
+  }
+  balls.push(ball);
+}
+
+function draw(){
+  ctx.background(235);
+  for (var i = 0; i < balls.length; i++) {
+    var b = balls[i];
+    moveBall(b);
+    drawBall(b);
+  }
+}
+
+
+function moveBall(b){
+    var m = Math.round(Mic.spectrum.length/2);
+    if(m > 0) {
+      var s = map(Mic.spectrum[b.me%(m-1)], 0, 255, 4, grid.spacing_x - 2);
+      b.sz = tween(b.sz, s, 2);
+    }
+    b.y +=2;
+    if( b.y > h) b.y = 0;
+}
+
+
+function drawBall(b){
+    ctx.fillStyle = "black";
+    ctx.fillRect(b.x, b.y, b.sz, grid.spacing_y - 2);
+
+}
+
+
+</script>
+
+</body>
+
+</html>

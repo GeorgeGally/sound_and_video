@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+<meta charset="utf-8">
+
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/video.js"></script>
+
+
+<script language="javascript" src="../js/vector.js"></script>
+<script language="javascript" src="../js/vector_particles.js"></script>
+
+<script src="../js/clmtrackr.min.js"></script>
+<script src="../js/model_pca_20_svm.js"></script>
+
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+
+var ctracker = new clm.tracker();
+var ratio = 5;
+
+
+function setup(){
+  ctracker.init(pModel);
+  vid = document.getElementById('videoOutput');
+  video.width = w/ratio;
+  video.height = h/ratio;
+  ctracker.start(vid);
+}
+
+
+function draw(){
+
+  ctx.background(0);
+
+  update();
+
+  if (ctracker.getCurrentPosition()) {
+    positions = ctracker.getCurrentPosition();
+
+    for (var i = 0; i < positions.length; i++) {
+      ctx.fillStyle = rgb(255);
+      var x = w - positions[i][0] * ratio;
+      var y = positions[i][1] * ratio;
+      ctx.fillEllipse(x, y, 10, 10);
+    }
+
+  }
+}
+
+
+function update(){
+
+  if (ctracker.getCurrentPosition()) {
+    positions = ctracker.getCurrentPosition();
+  }
+
+}
+
+</script>
+
+</body>
+
+</html>

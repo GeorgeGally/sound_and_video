@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>Mic - Soundwave</title>
+<title>Creative Coding Yea!</title>
 <head>
 <meta charset="utf-8">
 <script language="javascript" src="../js/creative_coding.js"></script>
@@ -16,24 +16,21 @@
 <script>
 
 var ctx = createCanvas("canvas1");
-
 ctx.background(235);
 
 // make a grid 100 wide
-var grid = new Grid(1000, 1);
+var num_bars = 100;
+var bar_width = w/num_bars;
 
 function draw(){
 
-  ctx.background(0);
+  ctx.clearRect(0,0,w,h);
 
-  for (var i = 0; i < grid.length; i++) {
+  for (var i = 0; i < num_bars; i++) {
     // Mic.mapSound(_me, _total, _min, _max)
-    var s = Mic.mapSound(i, grid.length, 2, h/4);
-
-    // PLAY WITH THESE VALUES
-    ctx.fillStyle = rgb(s);
-    ctx.fillRect(grid.x[i], grid.y[i] - s/2, grid.spacing.x-0.5, s);
-
+    var s = Mic.mapRawSound(i, num_bars, 2, h/4);
+    ctx.fillStyle = rgb(0);
+    ctx.fillRect(i * bar_width, h, bar_width - 0.5, -s);
   }
 
 }

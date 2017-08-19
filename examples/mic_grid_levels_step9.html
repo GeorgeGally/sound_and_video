@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+<meta charset="utf-8">
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/mic.js"></script>
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var gw = 20;
+var gh = 20;
+var grid = new Grid(gw, gh);
+
+var particles = []
+
+for (var i = 0; i < grid.length; i++) {
+  var particle = {x: grid.pos[i].x, y: grid.pos[i].y, me: i, sz: 10, dir: posNeg()};
+  particles.push(particle);
+}
+
+
+console.log(particles);
+
+
+
+
+function draw(){
+  ctx.background(235);
+  for (var i = 0; i < particles.length; i++) {
+    var p = particles[i];
+    var s = map(Mic.spectrum[i % Mic.spectrum.length], 0, 255, 0, 50);
+    p.sz = tween(p.sz, s, 2);
+    ctx.fillStyle = rgb(0);
+    ctx.fillEllipse(p.x, p.y, p.sz, p.sz);
+    p.y += (p.dir * 1);
+    if(p.y > h) p.y = 0;
+    if(p.y < 0) p.y = h;
+  }
+}
+
+
+
+javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.domElement); stats.domElement.style.position = 'absolute'; stats.domElement.style.bottom = '0px'; requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script); })()
+
+
+</script>
+
+</body>
+
+</html>

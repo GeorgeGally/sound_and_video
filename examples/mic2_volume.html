@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<title>Sound &amp; Motion - George Gally - Radarboy</title>
+<head>
+<meta charset="utf-8">
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/mic.js"></script>
+
+
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+
+
+function draw(){
+
+  ctx.background(235, 0.1);
+
+  var highs = Mic.getHighsVol(0, 150);
+  var mids = Mic.getMidsVol(0, 150);
+  var bass = Mic.getBassVol(0, 150);
+
+
+  // TRY CHANGE SHAPES AND COLOURS
+  ctx.fillStyle = rgb(highs, 0, 0);
+  ctx.fillEllipse(w/4, h/2, highs, highs);
+
+  ctx.fillStyle = rgb(0, mids, 0);
+  ctx.fillEllipse(w/2, h/2, mids, mids);
+
+  ctx.fillStyle = rgb(0, 0, bass);
+  ctx.fillEllipse(w/2 + w/4, h/2, bass, bass);
+  // ctx.centreFillRect(w/2, h/2, mids*5, mids*5);
+  // ctx.eqFillTriangle(w/2, h/2, bass*3, bass*3);
+  // ctx.fillPolygon(w/2, h/2, 6, s*5);
+}
+
+
+
+
+</script>
+
+</body>
+</html>

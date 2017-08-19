@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+
+<meta charset="utf-8">
+
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="js/mic.js"></script>
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var num_boxes = 300;
+var box_size = w/num_boxes;
+var radius = 100;
+var global_angle = 0;
+
+function draw(){
+
+  ctx.background(0, 0.2);
+  global_angle = global_angle + 0.1;
+  for (var i = 0; i < num_boxes; i=i+1) {
+
+    var vol = Mic.mapSound(i, num_boxes, 1, 150);
+    var my_angle = radians(distributeAngles(i, num_boxes));
+
+    var x = w/2 + Math.cos(global_angle + my_angle) * radius;
+    var y = h/2 + Math.sin(global_angle + my_angle) * radius;
+
+    console.log(x);
+
+    ctx.fillStyle = hsl(i, 80, 60);
+    //ctx.fillEllipse(x, y, vol/5, vol/5);
+    ctx.strokeStyle = hsl(i, 80, 60);
+
+    var x2 = w/2 + Math.cos(my_angle) * (radius + vol);
+    var y2 = h/2 + Math.sin(my_angle) * (radius + vol);
+
+    ctx.line(x, y, x2, y2);
+    ctx.fillEllipse(x2, y2, 5, 5);
+  }
+
+}
+
+
+////////////yo
+
+
+
+</script>
+</body>
+
+</html>
