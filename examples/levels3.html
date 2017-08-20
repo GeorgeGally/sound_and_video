@@ -40,7 +40,7 @@ function draw() {
     //var s = Sound.mapSpectrum(highs, i%20, 40, 0, engine.grid.spacing.y/2);
     var s = Sound.mapSound(i%20, 40, 0, engine.grid.spacing.y/2);
     if (s>0) p.sz = tween(p.sz, s, 5);
-    ctx.fillStyle = rgba(s*2);
+    ctx.fillStyle = rgba(s*6);
     ctx.centreFillRect(p.pos.x, p.pos.y - p.sz/2, engine.grid.spacing.x-1, p.sz);
     p.pos.y -=highs;
     p.pos.x +=bass;

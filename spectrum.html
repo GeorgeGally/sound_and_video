@@ -18,44 +18,27 @@
 <script>
 
 var ctx = createCanvas("canvas1");
-var sz = 200;
-var num_boxes = 100;
-var box_size = w/num_boxes;
-console.log(box_size);
 
+var number_of_bars = 150;
+var rect_width = w/number_of_bars;
 
-
-var radius = 200;
-var angle = 0;
 
 function draw(){
-  angle +=0.08;
 
-  ctx.background(255, 0.02);
-  x = w/2 + Math.cos(angle) * radius;
-  y = h/2 + Math.sin(angle) * radius;
-  ctx.fillStyle = "black";
-  ctx.fillEllipse(x, y, 20, 20);
+  ctx.background(20);
+  ctx.fillStyle = rgba(200, 0,0);
 
-  x = w/2 + Math.sin(angle) * radius/2;
-  y = h/2 + Math.cos(angle) * radius/2;
-  ctx.fillStyle = "black";
-  ctx.fillEllipse(x, y, 20, 20);
+  for (var i = 0; i < number_of_bars; i++) {
 
-  
-  // for (var i = 0; i < num_boxes; i=i+1) {
-  //   var vol = Mic.mapSound(i, num_boxes, 2, 100);
-  //   ctx.fillStyle = hsl(i, 80, 60);
-  //   ctx.fillRect(i*box_size, h/2 - vol, box_size-1, vol);
-  // }
+    // map(val, input_min, input_max, out_min, out_max)
+    var c = map(i, 0, number_of_bars, 0, 360);
+    ctx.fillStyle = hsl(c, 80, 60);
+    //mapSound(_me, _total, _min, _max)
+    vol = Mic.mapSound(i, number_of_bars, 0, 100);
+    ctx.fillRect(i*rect_width, h/2 - vol/2, rect_width-1, vol);
+  }
 
 }
-
-
-
-
-
-////////////yo
 
 
 

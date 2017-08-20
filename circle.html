@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+
+<meta charset="utf-8">
+
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="js/mic.js"></script>
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+
+var number_of_bars = 550;
+var rect_width = w/number_of_bars;
+
+var radius = 50;
+var num_circles = 300;
+var angle = radians(360 / num_circles);
+ctx.lineWidth = 2;
+
+
+function draw(){
+
+  ctx.background(0, 0.02);
+  ctx.fillStyle = rgba(200, 0,0);
+
+  for (var i = 0; i < num_circles; i++) {
+
+    radius = Mic.mapSound(i, num_circles *2, 100, 200);
+
+    var x = w/2 + Math.cos(angle*i) * radius;
+    var y = h/2 + Math.sin(angle*i) * radius;
+
+    var radius2 = Mic.mapSound(i, num_circles, radius, radius + 100);
+
+    var x2 = w/2 + Math.cos(angle*i) * radius2;
+    var y2 = h/2 + Math.sin(angle*i) * radius2;
+
+    // ctx.fillStyle = "black";
+    // ctx.fillEllipse(x, y, 20, 20);
+
+    var c = map(i, 0, number_of_bars, 0, 360);
+    ctx.strokeStyle = hsl(c, 80, 60);
+    ctx.line(x, y, x2, y2);
+  }
+
+
+  // for (var i = 0; i < number_of_bars; i++) {
+  //
+  //   // map(val, input_min, input_max, out_min, out_max)
+  //   var c = map(i, 0, number_of_bars, 0, 360);
+  //   ctx.fillStyle = hsl(c, 80, 60);
+  //   //mapSound(_me, _total, _min, _max)
+  //   vol = Mic.mapSound(i, number_of_bars, 0, 100);
+  //   ctx.fillRect(i*rect_width, h/2 - vol/2, rect_width-1, vol);
+  // }
+
+}
+
+
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+
+<meta charset="utf-8">
+
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="js/particle_engine.js"></script>
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/audio.css" type="text/css" media="screen" />
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var particles = [];
+var MAX = 500;
+var MAX_VOL = 100;
+var number_of_bars = 50;
+
+var rect_width = w/number_of_bars;
+
+
+var engine = new particleEngine(10, 10);
+
+console.log(engine);
+
+function draw(){
+
+  ctx.background(20, 0.5);
+  ctx.fillStyle = rgb(255);
+  // loop though FFT bins
+  for (var i = 0; i < number_of_bars; i++) {
+
+    //mapSound(_me, _total, _min, _max)
+    vol = Sound.mapSound(i, number_of_bars * 2, 0, MAX_VOL);
+    if(frameCount > 30 && vol > MAX_VOL - 20) {
+      addParticle(i*rect_width, h/2 - vol + MAX_VOL);
+    }
+  }
+
+  updateParticleEngine();
+
+}
+
+function updateParticleEngine(){
+  // particles updating and drawing
+  for (var i = 0; i < particles.length; i++) {
+    var p = particles[i];
+    update(p);
+    render(p);
+  }
+}
+
+
+////// PARTICLE STUFF
+
+function addParticle(_x, _y){
+
+    var temp_particle = {
+      x: _x,
+      y: _y,
+      speedx: random(-1, 1),
+      speedy: random(-5, 5),
+      sz: random(5, 10),
+      c: rgb(255)
+    }
+    particles.push(temp_particle);
+    if(particles.length > MAX) particles.splice(0,1);
+}
+
+
+function update(p){
+  p.x += p.speedx;
+  p.y += p.speedy;
+  // if(p.x < p.sz/2 || p.x > w - p.sz/2) {
+  //   p.speedx*=-1;
+  // }
+  // if(p.y < p.sz/2 || p.y > h - p.sz/2) {
+  //   p.c = rgb(random(255), 0, random(100, 255));
+  //   p.speedy*=-1;
+  //   p.speedy*= random(0.8, 1.1);
+  // }
+}
+
+function render(p){
+  if(p.sz > 1) p.sz -= 0.05;
+  ctx.fillStyle = p.c;
+  ctx.fillEllipse(p.x, p.y, p.sz, p.sz)
+}
+
+
+
+</script>
+<script language="javascript" src="js/soundcloud.js"></script>
+</body>
+
+</html>

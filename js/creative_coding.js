@@ -544,9 +544,9 @@ function dist(x1, y1, x2, y2) {
 
 
 
-function tween(pos, target, speed){
- if (speed == undefined) speed = 20;
- pos += (target - pos)/speed;
+function tween(position, target, speed){
+ speed = speed || 20;
+ position += (target - position)/speed;
  return pos;
 }
 

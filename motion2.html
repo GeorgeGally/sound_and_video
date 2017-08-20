@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+
+<meta charset="utf-8">
+
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="js/video.js"></script>
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var ctx2 = createHiddenCanvas("canvas2");
+
+var sample_size = 10;
+var sensitivity = 40;
+
+var old_red = [];
+
+var MAX = 500;
+var particles = [];
+
+ctx.background(0);
+
+function draw(){
+
+  ctx2.drawImage(video, 0, 0, w, h);
+  var colour_data = ctx2.getImageData(0, 0 , w, h).data;
+
+  ctx.background(0, 0.1);
+
+  for (var y = 0; y < h; y+=sample_size) {
+    for (var x = 0; x < w; x+=sample_size) {
+
+      var pos = (x + y * w) * 4;
+      var red = colour_data[pos];
+      var blue = colour_data[pos+1];
+      var green = colour_data[pos+2];
+
+      // is there motion
+      if(old_red.length > 0 && Math.abs(old_red[pos] - red) > sensitivity) {
+          //ctx.fillStyle = "red";
+          //ctx.fillEllipse(w-x, y, 5, 5);
+
+         addParticle(w - x, y, red, blue, green);
+      }
+      old_red[pos] = red;
+
+    }
+  }
+
+    updateParticleEngine();
+}
+
+
+
+
+
+////// PARTICLE STUFF
+
+function updateParticleEngine(){
+  // particles updating and drawing
+  for (var i = 0; i < particles.length; i++) {
+    var p = particles[i];
+    update(p);
+    render(p);
+  }
+}
+
+function addParticle(_x, _y, _r, _g, _b){
+
+    var temp_particle = {
+      x: _x,
+      y: _y,
+      startx: _x,
+      starty: _y,
+      speedx: random(-10, 10),
+      speedy: 0,
+      sz: random(5, 10),
+      c: rgb(_r, _g, _b)
+    }
+    particles.push(temp_particle);
+    if(particles.length > MAX) particles.splice(0,1);
+}
+
+
+function update(p){
+  p.x += p.speedx;
+  p.y += p.speedy;
+  //p.speedy += 0.2;
+  if(p.sz > 1) p.sz -= 0.05;
+
+}
+
+function render(p){
+  if(p.sz > 1) p.sz -= 0.05;
+  // ctx.fillStyle = p.c;
+  // ctx.fillEllipse(p.x, p.y, p.sz, p.sz)
+  ctx.strokeStyle = p.c;
+  ctx.line(p.x, p.y, p.startx, p.starty);
+}
+
+
+
+
+
+
+</script>
+</body>
+
+</html>

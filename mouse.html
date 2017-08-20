@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+    <meta charset="utf-8">
+<!-- <script src='http://connect.soundcloud.com/sdk.js'></script> -->
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+<!-- <link rel="stylesheet" href="css/audio.css" type="text/css" media="screen" /> -->
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var oldX = mouseX = w/2;
+var oldY = mouseY = h/2;
+var line_width = 1;
+
+var ball = {x: w/2, y: h/2};
+
+ctx.lineWidth = 2;
+ctx.strokeStyle = rgb(0,174,239);
+
+function draw(){
+
+  ctx.background(250, 0.1);
+  // only draw the line if our mouse is pressed
+  if (mousePressed) {
+
+    // tween (input, new value, speed)
+    line_width = tween(line_width, 1 + Math.abs(mouseX - oldX), 10);
+
+    ctx.lineWidth = line_width;
+    // syntax: line(x1, y1, x2, y2)
+    ctx.line(mouseX, mouseY, oldX, oldY);
+    ball.x = tween(ball.x, mouseX, 50);
+    ball.y = tween(ball.y, mouseY, 50);
+
+    ctx.fillSyle = "red";
+    ctx.fillEllipse(ball.x, ball.y, 40, 40);
+
+  }
+  oldX = mouseX;
+  oldY = mouseY;
+
+}
+
+
+</script>
+
+</body>
+
+</html>

@@ -19,30 +19,21 @@
 
 var ctx = createCanvas("canvas1");
 
-var x = w/2;
-var y = h/2;
-var speedx = random(-5, 5);
-var speedy = random(-5, 5);
-var sz = random(20, 50);
-var c = rgb(random(255), 0, random(100, 255));
 
 function draw(){
-  ctx.background(220);
-  update();
-  render();
+
+  ctx.background(200, 0.1);
+  var highs = Mic.getHighsVol(360);
+  var mids = Mic.getMidsVol(360);
+  var bass = Mic.getBassVol(360);
+  ctx.fillStyle = hsl(highs, 90, 50);
+  ctx.fillEllipse(w/2, h/4, highs, highs);
+  ctx.fillStyle = hsl(mids, 90, 50);
+  ctx.fillEllipse(w/2, h/2, mids, mids);
+  ctx.fillStyle = hsl(bass, 90, 50);
+  ctx.fillEllipse(w/2, h/2+h/4, bass, bass);
 }
 
-function update(){
-  x += speedx;
-  y += speedy;
-  if(x < sz/2 || x > w - sz/2) speedx*=-1;
-  if(y < sz/2 || y > h - sz/2) speedy*=-1;
-}
-
-function render(){
-  ctx.fillStyle = c;
-  ctx.fillEllipse(x, y, sz, sz)
-}
 
 
 </script>

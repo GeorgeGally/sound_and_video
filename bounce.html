@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+
+<meta charset="utf-8">
+
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="js/mic.js"></script>
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+
+var particles = [];
+
+
+
+
+function addParticle(){
+
+    var temp_particle = {
+      x: w/2,
+      y: h/2,
+      speedx: random(-5, 5),
+      speedy: random(-5, 5),
+      sz: random(10, 20),
+      c: rgb(random(255), 0, random(100, 255))
+    }
+    particles.push(temp_particle);
+}
+
+
+function draw(){
+
+  ctx.background(220, 0.1);
+
+  if(frameCount > 20 && Mic.getVolume() > 80) {
+    addParticle();
+  }
+
+  for (var i = 0; i < particles.length; i++) {
+    var p = particles[i];
+    update(p);
+    render(p);
+  }
+
+}
+
+function update(p){
+  p.x += p.speedx;
+  p.y += p.speedy;
+  if(p.x < p.sz/2 || p.x > w - p.sz/2) {
+    p.speedx*=-1;
+    p.c = rgb(random(255), 0, random(100, 255));
+    //p.speedy*= random(0.8, 1.1);
+  }
+  if(p.y < p.sz/2 || p.y > h - p.sz/2) {
+    p.c = rgb(random(255), 0, random(100, 255));
+    p.speedy*=-1;
+    p.speedy*= random(0.8, 1.1);
+  }
+}
+
+function render(p){
+  if(p.sz > 1) p.sz -=0.1;
+  ctx.fillStyle = p.c;
+  ctx.fillEllipse(p.x, p.y, p.sz, p.sz)
+}
+
+
+</script>
+</body>
+
+</html>

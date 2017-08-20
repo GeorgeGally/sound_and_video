@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+
+<meta charset="utf-8">
+
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+<!-- <script language="javascript" src="js/mic.js"></script> -->
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/audio.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+
+var radius = 50;
+var num_circles = 80;
+var angle = radians(360 / num_circles);
+ctx.lineWidth = 1;
+
+
+function draw(){
+
+  ctx.background(0);
+
+  for (var i = 0; i < num_circles; i++) {
+
+    // get an individual radius for each circle
+    radius = Sound.mapSound(i, num_circles*2, 100, 200);
+
+    // work out pythagorean x, y
+    var x = w/2 + Math.cos(angle*i) * radius;
+    var y = h/2 + Math.sin(angle*i) * radius;
+
+    // big cirlce
+    ctx.fillStyle = rgb(i*3, 0, 0);
+    ctx.fillEllipse(x, y, radius/2, radius/2);
+
+    // small circle
+    ctx.fillStyle = rgba(0);
+    ctx.fillEllipse(x, y, 10, 10);
+
+    // line to centre
+    ctx.strokeStyle = rgba(255);
+    ctx.line(x, y, w/2, h/2);
+
+  }
+
+}
+
+</script>
+<script language="javascript" src="js/soundcloud.js"></script>
+</body>
+
+</html>

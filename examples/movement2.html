@@ -22,7 +22,6 @@
 var ctx = createCanvas("canvas1");
 var engine = new particleEngine(1, 50);
 
-
 console.log(engine.grid);
 
 for (var i = 0; i < engine.particles.length; i++) {
@@ -43,7 +42,7 @@ function draw() {
     var s = Sound.mapSound(i%40, 80, 0, 3);
     if (s>0) {
     p.sz = tween(p.sz, s, 5);
-    p.pos.y = p.pos.y + s * p.dir.y;
+    //p.pos.y = p.pos.y + s * p.dir.y;
     }
     ctx.fillStyle = rgba(sticky(s*40, 20));
     ctx.fillRect(0, p.pos.y - p.sz/2, w, p.sz);
