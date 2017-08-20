@@ -26,10 +26,13 @@ function sampleColours(){
 }
 
 
+
 /// MOUSE PRESS SAMPLE background
-document.onmousedown = function() {
-  sampleVideo();
-}
+// document.onmousedown = function() {
+//   sampleVideo();
+// }
+
+window.addEventListener('keydown', function(){ sampleVideo();});
 
 function sampleVideo(){
   console.log("sampleVideo");

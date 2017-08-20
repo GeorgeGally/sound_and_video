@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+
+<meta charset="utf-8">
+
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="js/video.js"></script>
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var ctx2 = createHiddenCanvas("canvas2");
+
+var sample_size = 20;
+var sensitivity = 40;
+
+var MAX = 1500;
+var particles = [];
+
+
+var old_red = [];
+
+function draw(){
+
+
+  //console.log(sample);
+  ctx2.drawImage(video, 0, 0, w, h);
+  var sample = ctx2.getImageData(0, 0, w, h).data;
+
+  ctx.background(0, 0.1);
+
+  for (var y = 0; y < h; y+=sample_size) {
+    for (var x = 0; x < w; x+=sample_size) {
+
+      var pos = (x + y * w) * 4;
+      var red = sample[pos];
+      var green = sample[pos+1];
+      var blue = sample[pos+2];
+      if (old_red.length > 0 && Math.abs(old_red[pos] - red) > sensitivity) {
+        //ctx.fillStyle = rgb(red, blue, green);
+        //ctx.fillRect(x, y, sample_size, sample_size);
+        addParticle(w - x, y, red, green, blue);
+      }
+
+      old_red[pos] = red;
+    }
+  }
+  updateParticleEngine()
+}
+
+
+
+
+
+
+
+
+////// PARTICLE STUFF
+
+function updateParticleEngine(){
+  // particles updating and drawing
+  for (var i = 0; i < particles.length; i++) {
+    var p = particles[i];
+    update(p);
+    render(p);
+  }
+}
+
+function addParticle(_x, _y, _r, _g, _b){
+
+    // if (_x > w/2 && y > h/2) {
+    //   var new_speed = random(10);
+    //   var c = "green"
+    // } else {
+    //   var new_speed = random(-10);
+    //   //var c = "red"
+    // }
+
+    // if (_y > h/2) {
+    //   var c = "blue"
+    // } else {
+    //   var c = "orange"
+    // }
+
+    var temp_particle = {
+      x: _x,
+      y: _y,
+      startx: _x,
+      starty: _y + random(-sample_size/2, sample_size/2),
+      speedx: 0,
+      speedy: -10,
+      sz: 10,
+      c: rgb(_r, _g, _b)
+    }
+    particles.push(temp_particle);
+    if(particles.length > MAX) particles.splice(0,1);
+}
+
+
+function update(p){
+  p.x += p.speedx;
+  p.y += p.speedy;
+  p.speedy += 0.2;
+  if(p.sz > 1) p.sz -= 0.05;
+
+}
+
+function render(p){
+  if(p.sz > 1) p.sz -= 0.05;
+
+  // ctx.strokeStyle = p.c;
+  // ctx.line(p.x, p.y, p.startx, p.starty);
+  ctx.fillStyle = p.c;
+  ctx.fillEllipse(p.x, p.y, p.sz, p.sz);
+}
+
+
+
+
+
+
+</script>
+</body>
+
+</html>

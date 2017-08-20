@@ -1,5 +1,5 @@
 
-var MAX = 1500;
+var MAX = 2500;
 var particles = [];
 
 ////// PARTICLE STUFF
@@ -14,16 +14,16 @@ function updateParticleEngine(){
 }
 
 function addParticle(_x, _y){
-
+  //console.log(_y);
     var temp_particle = {
-      x: _x,
-      y: _y,
-      startx: _x,
-      starty: _y,
+      x: random(w),
+      y: random(h),
+      targetx: _x,
+      targety: _y,
       speedx: 0,
       speedy: random(-5, -2),
-      sz: 10,
-      c: rgb(255, 0, 0)
+      sz: 20,
+      c: rgb(255)
     }
     particles.push(temp_particle);
     if(particles.length > MAX) particles.splice(0,1);
@@ -31,16 +31,20 @@ function addParticle(_x, _y){
 
 
 function update(p){
-  p.x += p.speedx;
-  p.y += p.speedy;
-  p.speedy += 0.6;
-  if(p.sz > 1) p.sz -= 0.09;
+  p.x = tween(p.x, p.targetx, 20);
+  p.y = tween(p.y, p.targety, 20);
+
+  // p.targetx += random(-0.2, 0.2);
+  // p.targety += random(-0.2, 0.2);
+  //p.speedy += 0.6;
+  //if(p.sz > 1) p.sz -= 0.09;
 
 }
 
 function render(p){
-  if(p.sz > 1) p.sz -= 0.05;
-
+  ctx.lineWidth = 0.5;
   ctx.fillStyle = p.c;
-  ctx.fillEllipse(p.x, p.y, p.sz, p.sz);
+  ctx.fillEllipse(p.x, p.y, 4, 4);
+  ctx.strokeStyle = p.c;
+  ctx.strokeEllipse(p.x, p.y, p.sz, p.sz);
 }

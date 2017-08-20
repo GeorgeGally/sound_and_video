@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+
+<meta charset="utf-8">
+
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/audio.css" type="text/css" media="screen" />
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+
+//CREATE GRID
+var grid = createGrid(20, 80);
+console.log(grid);
+
+var dir = 1;
+var speed = 1;
+
+function draw(){
+  ctx.background(0);
+  if (chance(150)) dir *=-1;
+
+  if (chance(200)) resetGrid();
+  // LOOP THROUGH GRID
+  for (var i = 0; i < grid.length; i++) {
+    var g = grid[i];
+
+    vol = Sound.mapSound(i, grid.length * 2, 5, 20);
+
+    ctx.fillStyle = rgba(vol*10, 1, 0);
+    ctx.fillRect(g.x, g.y, vol, vol);
+
+    // MOVE GRID
+    g.x += speed * dir;
+    //g.y -= speed * dir;
+
+    // TEST IF OUTSIDE
+    if(g.x > w) g.x = 0;
+    if(g.y > h) g.y = 0;
+
+    if(g.x < 0) g.x = w;
+    if(g.y < 0) g.y = h;
+  }
+}
+
+
+function resetGrid(){
+  console.log("resetGrid");
+  grid = createGrid(randomInt(2, 30), randomInt(5, 180))
+}
+
+</script>
+
+<script language="javascript" src="js/soundcloud.js"></script>
+</body>
+
+</html>

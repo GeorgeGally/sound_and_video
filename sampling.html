@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+<meta charset="utf-8">
+<script language="javascript" src="../js/creative_coding.js"></script>
+<script language="javascript" src="../js/canvas.js"></script>
+<script language="javascript" src="../js/particles_come_in.js"></script>
+<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var sample_size = 15;
+ctx.font = "100px Arial";
+ctx.textAlign = "center";
+
+var smile = new Image();
+smile.src = "img/smile.png";
+
+
+function setup(){
+  sampleScreen();
+}
+
+
+function draw() {
+  ctx.background(0, 0.1);
+  updateParticleEngine();
+
+}
+
+
+function sampleScreen(){
+  ctx.background(0);
+  // ctx.fillStyle = "white";
+  // ctx.fillText("say something", w/2, h/2);
+  ctx.drawImage(smile, 0, 0, w, h);
+  sampleColours();
+  ctx.background(0);
+}
+
+////////
+
+
+
+
+
+function sampleColours(){
+
+  var sample = ctx.getImageData(0, 0, w, h).data;
+
+  for (var y = 0; y < h; y+=sample_size) {
+    for (var x = 0; x < w; x+=sample_size) {
+
+      var pos = (x + y * w) * 4;
+      var red = sample[pos];
+      var green = sample[pos+1];
+      var blue = sample[pos+2];
+
+      // CHECK IF DIFFERENCE BETWEEN SAVED RED AND CURRENT
+      if (brightness(red, green, blue, 100) > 50) {
+        addParticle(x, y);
+      }
+
+      //saved_red[pos] = red;
+    }
+  }
+}
+
+
+</script>
+
+</body>
+
+</html>

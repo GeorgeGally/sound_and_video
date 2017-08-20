@@ -547,7 +547,7 @@ function dist(x1, y1, x2, y2) {
 function tween(position, target, speed){
  speed = speed || 20;
  position += (target - position)/speed;
- return pos;
+ return position;
 }
 
 function chance(value){
