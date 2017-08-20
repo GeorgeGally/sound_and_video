@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+
+<meta charset="utf-8">
+
+<script language="javascript" src="js/creative_coding.js"></script>
+<script language="javascript" src="js/canvas.js"></script>
+<script language="javascript" src="js/video.js"></script>
+<script language="javascript" src="js/red_rain.js"></script>
+<script language="javascript" src="js/sample_colours.js"></script>
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+var ctx2 = createHiddenCanvas("canvas2");
+
+function draw(){
+
+  ctx.background(0, 0.1);
+
+  if(saved_red.length > 0) {
+    sampleColours();
+  }
+
+  updateParticleEngine();
+
+}
+
+
+</script>
+</body>
+
+</html>

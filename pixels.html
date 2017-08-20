@@ -45,9 +45,9 @@ function draw(){
       var red = sample[pos];
       var green = sample[pos+1];
       var blue = sample[pos+2];
-      if (Math.abs(old_red[pos] - red) > sensitivity) {
-        // ctx.fillStyle = rgb(red, blue, green);
-        // ctx.fillRect(x, y, sample_size, sample_size);
+      if (old_red.length > 0 && Math.abs(old_red[pos] - red) > sensitivity) {
+        //ctx.fillStyle = rgb(red, blue, green);
+        //ctx.fillRect(x, y, sample_size, sample_size);
         addParticle(w - x, y, red, green, blue);
       }
 
@@ -77,18 +77,27 @@ function updateParticleEngine(){
 
 function addParticle(_x, _y, _r, _g, _b){
 
-    if (_x > w/2) {
-      var new_speed = random(10);
-    } else {
-      var new_speed = random(-10);
-    }
+    // if (_x > w/2 && y > h/2) {
+    //   var new_speed = random(10);
+    //   var c = "green"
+    // } else {
+    //   var new_speed = random(-10);
+    //   //var c = "red"
+    // }
+
+    // if (_y > h/2) {
+    //   var c = "blue"
+    // } else {
+    //   var c = "orange"
+    // }
+
     var temp_particle = {
       x: _x,
       y: _y,
       startx: _x,
       starty: _y + random(-sample_size/2, sample_size/2),
-      speedx: new_speed,
-      speedy: 0,
+      speedx: 0,
+      speedy: -10,
       sz: 10,
       c: rgb(_r, _g, _b)
     }
